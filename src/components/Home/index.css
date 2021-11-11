@@ -1,0 +1,72 @@
+.home-route-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #161625;
+  min-height: 100vh;
+}
+
+.search-container {
+  background: #2f2f43;
+  border-radius: 8px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  min-width: 700px;
+  align-self: center;
+  margin-top: 100px;
+}
+@media screen and (max-width: 768px) {
+  .search-container {
+    min-width: 70%;
+  }
+}
+
+.search-input {
+  font-size: 16px;
+  line-height: 24px;
+  color: #94a3b8;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.search-icon {
+  color: #94a3b8;
+  height: 16px;
+  margin-left: 30px;
+  margin-right: 8px;
+}
+.state-wise-records {
+  display: flex;
+  flex-direction: column;
+}
+
+.state-wise-total-record {
+  display: flex;
+  flex-direction: column;
+  background: #1e1e30;
+  border: 1px solid #475569;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
+  border-radius: 12px;
+  width: 80%;
+}
+
+.total-record-heading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-heading {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  color: #f8fafc;
+}
+
+.hr-line {
+  border: 1px solid #475569;
+  width: 100%;
+}

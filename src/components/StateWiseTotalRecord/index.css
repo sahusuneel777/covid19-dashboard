@@ -1,56 +1,49 @@
 .state-total-record-card {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-.confirmed {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 24px;
-  color: #ff073a;
-}
-
-.active {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 24px;
-  color: #007bff;
-}
-.deceased {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 24px;
-  color: #6c757d;
-}
-
-.recovered {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 24px;
-  color: #28a745;
-}
-
-.population {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 24px;
-  color: #94a3b8;
-}
 .state-name {
   font-family: Roboto;
   font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #f1f5f9;
+  width: 110px;
+  text-align: left;
+}
+
+.case-item {
+  font-family: Roboto;
+  font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 24px;
-  color: #f1f5f9;
+  width: 100px;
+}
+
+.confirmed1 {
+  color: #ff073a;
+  text-align: right;
+}
+
+.active1 {
+  color: #007bff;
+  text-align: right;
+}
+.deceased1 {
+  color: #6c757d;
+  text-align: right;
+}
+
+.recovered1 {
+  color: #28a745;
+  text-align: right;
+}
+
+.population {
+  color: #94a3b8;
+  text-align: right;
 }

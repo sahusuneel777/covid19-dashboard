@@ -1,0 +1,9 @@
+.state-specific-details-route {
+  background-color: #161625;
+  min-height: 100vh;
+}
+
+.tested-count-container {
+  display: flex;
+  flex-direction: column;
+}

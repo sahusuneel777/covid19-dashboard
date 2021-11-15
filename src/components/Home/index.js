@@ -1,17 +1,13 @@
 import {Component} from 'react'
+import {Link} from 'react-dom'
 import {BsSearch} from 'react-icons/bs'
+import {FcGenericSortingAsc, FcGenericSortingDesc} from 'react-icons/fc'
 import StateWiseTotalRecord from '../StateWiseTotalRecord'
+import CaseCardItem from '../CaseCardItem'
+import SearchRecommendation from '../SearchRecommendation'
 import Footer from '../Footer'
 import Header from '../Header'
 import './index.css'
-
-// const arr = []
-// const keys = Object.keys(fetchedData)
-
-// for (let i = 0, n = keys.length; i < n; i += 1) {
-//   const key = keys[i]
-//   arr[key] = fetchedData[key]
-// }
 
 const statesList = [
   {
@@ -162,20 +158,15 @@ const statesList = [
 
 class Home extends Component {
   state = {
-    stateWiseDataList: [],
-    totalList: [],
+    stateWiseData: {},
+    showStateStats: true,
+    showSearchSuggestions: false,
+    searchInput: '',
   }
 
   componentDidMount() {
     this.getAllStatesData()
   }
-
-  getFormattedTotalData = eachTotal => ({
-    confirmed: eachTotal.confirmed,
-    deceased: eachTotal.deceased,
-    recovered: eachTotal.recovered,
-    tested: eachTotal.tested,
-  })
 
   getAllStatesData = async () => {
     const apiUrl = 'https://apis.ccbp.in/covid19-state-wise-data'
@@ -183,72 +174,161 @@ class Home extends Component {
       method: 'GET',
     }
     const response = await fetch(apiUrl, options)
-    const fetchedData = await response.json()
-
-    // fetchedData.map(eachData => console.log(eachData))
-    let totalData = []
-    // totalData = this.getFormattedTotalData(fetchedData.AP.total)
-
-    // totalData = this.getFormattedTotalData(fetchedData.AP.total)
-    // this.getFormattedTotalData(`fetchedData.${eachState.state_code}.total`),
-    // problems 1.applying map to fetchedData is not working
-    // 2. defining string outside and applying it later also not working
-
-    totalData = statesList.map(
-      // stateCode= `${eachState.state_code}`
-      eachState => fetchedData[`${eachState.state_code}`].total,
-    )
-
-    this.setState({stateWiseDataList: fetchedData, totalList: totalData})
+    if (response.ok) {
+      const fetchedData = await response.json()
+      this.setState({stateWiseData: fetchedData})
+    }
   }
 
-  getEachStateRecord = eachState => {
-    // const {stateWiseDataList} = this.state
-    const stateCode = eachState.state_code
+  onchangeSearchInput = event => {
+    this.setState({
+      showSearchSuggestions: true,
+      searchInput: event.target.value,
+      showStateStats: false,
+    })
+  }
 
-    return (
-      <div>
-        <p>{`stateWiseDataList.${stateCode}`}</p>
-      </div>
-    )
+  convertObjectsDataIntoListItemsUsingForInMethod = () => {
+    const resultList = []
+    const {stateWiseData} = this.state
+
+    // getting keys of an object object
+    const keyNames = Object.keys(stateWiseData)
+
+    keyNames.forEach(keyName => {
+      // console.log(stateWiseData[keyName])
+      if (stateWiseData[keyName]) {
+        const {total} = stateWiseData[keyName]
+        // if the state's covid data is available we will store it or we will store 0
+        const confirmed = total.confirmed ? total.confirmed : 0
+        const deceased = total.deceased ? total.deceased : 0
+        const recovered = total.recovered ? total.recovered : 0
+        const tested = total.tested ? total.tested : 0
+        const population = stateWiseData[keyName].meta.population
+          ? stateWiseData[keyName].meta.population
+          : 0
+        resultList.push({
+          stateCode: keyName,
+          // name: statesList.find(state => state.state_code === keyName),
+          name: statesList.find(state => state.state_code === keyName),
+          confirmed,
+          deceased,
+          recovered,
+          tested,
+          population,
+          active: confirmed - (deceased + recovered),
+        })
+      }
+    })
+    return resultList
   }
 
   render() {
-    const {stateWiseDataList, totalList} = this.state
-    console.log(stateWiseDataList)
-    console.log(typeof stateWiseDataList)
-    console.log(totalList)
-    return (
-      <div className="home-route-container">
-        <Header />
-        <div className="search-container">
-          <BsSearch className="search-icon" />
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Enter the State"
-          />
-        </div>
+    const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
+    const {
+      searchInput,
+      stateWiseData,
+      showSearchSuggestions,
+      showStateStats,
+    } = this.state
+    console.log(stateWiseData)
+    let filteredStatesList = []
+    filteredStatesList = statesList.filter(eachState =>
+      eachState.state_name.toLowerCase().includes(searchInput.toLowerCase()),
+    )
 
-        <ul className="state-wise-total-record">
-          <li className="total-record-heading">
-            <p className="table-heading">States/UT</p>
-            <p className="table-heading">Confirmed</p>
-            <p className="table-heading">Active</p>
-            <p className="table-heading">Recovered</p>
-            <p className="table-heading">Deceased</p>
-            <p className="table-heading">Population</p>
-          </li>
-          <hr className="hr-line" />
-          {totalList.map(eachTotal => (
-            <StateWiseTotalRecord
-              key={eachTotal.confirmed}
-              stateTotal={eachTotal}
+    const getUpdatedFilteredStates = state => ({
+      stateCode: state.state_code,
+      stateName: state.state_name,
+    })
+
+    const updatedFilteredStates = filteredStatesList.map(eachState =>
+      getUpdatedFilteredStates(eachState),
+    )
+
+    return (
+      <>
+        <Header />
+        <div className="home-route-container">
+          <div className="search-container">
+            <BsSearch className="search-icon" />
+            <input
+              type="search"
+              className="search-input"
+              placeholder="Enter the State"
+              onChange={this.onchangeSearchInput}
             />
-          ))}
-        </ul>
-        <Footer />
-      </div>
+          </div>
+          {showSearchSuggestions && (
+            <ul className="search-recommendation-list">
+              {updatedFilteredStates.map(eachState => (
+                <SearchRecommendation
+                  key={eachState.state_code}
+                  state={eachState}
+                />
+              ))}
+            </ul>
+          )}
+
+          {showStateStats && (
+            <div className="stats-section">
+              <div className="diff-type-cards">
+                {TabelData.map(
+                  eachTotal =>
+                    eachTotal.name === undefined && (
+                      <CaseCardItem
+                        key={eachTotal.confirmed}
+                        stateTotal={eachTotal}
+                      />
+                    ),
+                )}
+              </div>
+
+              <ul
+                className="state-wise-total-table-record"
+                testid="stateWiseCovidDataTable"
+              >
+                <li className="total-record-heading">
+                  <div className="sorting-item">
+                    <p className="table-heading">States/UT</p>
+                    <button
+                      type="button"
+                      className="sort-icon"
+                      testid="ascendingSort"
+                    >
+                      <FcGenericSortingAsc />
+                    </button>
+                    <button
+                      type="button"
+                      className="sort-icon"
+                      testid="descendingSort"
+                    >
+                      <FcGenericSortingDesc />
+                    </button>
+                  </div>
+                  <p className="table-heading">Confirmed</p>
+                  <p className="table-heading">Active</p>
+                  <p className="table-heading">Recovered</p>
+                  <p className="table-heading">Deceased</p>
+                  <p className="table-heading">Population</p>
+                </li>
+                <hr className="hr-line" />
+                {TabelData.map(
+                  eachTotal =>
+                    eachTotal.name !== undefined && (
+                      <StateWiseTotalRecord
+                        key={eachTotal.confirmed}
+                        stateTotal={eachTotal}
+                      />
+                    ),
+                )}
+              </ul>
+            </div>
+          )}
+          <Footer />
+        </div>
+      </>
+      // </Link>
     )
   }
 }

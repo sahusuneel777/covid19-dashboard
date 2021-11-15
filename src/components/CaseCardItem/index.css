@@ -1,0 +1,41 @@
+.country-wide {
+  list-style-type: none;
+  margin: 10px;
+  width: 139px;
+  height: 142px;
+}
+.confirmed {
+  color: #ff073a;
+  text-align: center;
+}
+
+.active {
+  color: #007bff;
+  text-align: center;
+}
+
+.recovered {
+  color: #28a745;
+  text-align: center;
+}
+
+.deceased {
+  color: #6c757d;
+  text-align: center;
+}
+
+.case-card-heading {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.count {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+}

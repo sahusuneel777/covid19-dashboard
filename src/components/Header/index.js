@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import {Link} from 'react-router-dom'
 import './index.css'
 
 class Header extends Component {
@@ -24,9 +25,11 @@ class Header extends Component {
     return (
       <div className="header-container">
         <div className="nav-bar-sm-container">
-          <h1 className="logo-heading">
-            COVID19<span className="india">INDIA</span>
-          </h1>
+          <Link to="/" className="nav-item-link">
+            <h1 className="logo-heading">
+              COVID19<span className="india">INDIA</span>
+            </h1>
+          </Link>
           <button
             type="button"
             onClick={this.onClickNavBarIcon}
@@ -42,8 +45,12 @@ class Header extends Component {
         {displaySmNavItems && (
           <div className="nav-sm-controls">
             <ul className="sm-controls">
-              <li className="nav-item">Home</li>
-              <li className="nav-item">About</li>
+              <Link to="/" className="nav-item-link">
+                <li className="nav-item">Home</li>
+              </Link>
+              <Link to="/about" className="nav-item-link">
+                <li className="nav-item">About</li>
+              </Link>
             </ul>
             <button
               testid="close-nav-btn"
@@ -64,8 +71,13 @@ class Header extends Component {
             COVID19<span className="india">INDIA</span>
           </h1>
           <ul className="nav-controls">
-            <li className="nav-item">Home</li>
-            <li className="nav-item">About</li>
+            <Link to="/" className="nav-item-link">
+              <li className="nav-item">Home</li>
+            </Link>
+
+            <Link to="/about" className="nav-item-link">
+              <li className="nav-item">About</li>
+            </Link>
           </ul>
         </div>
       </div>

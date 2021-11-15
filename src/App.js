@@ -1,5 +1,10 @@
+import {Switch, Route} from 'react-router-dom'
 import './App.css'
 import Home from './components/Home'
+
+import StateSpecificDetails from './components/StateSpecificDetails'
+import About from './components/About'
+import Covid19Context from './Context/Covid19'
 // const statesList = [
 //   {
 //     state_code: 'AN',
@@ -147,6 +152,13 @@ import Home from './components/Home'
 //   },
 // ]
 
-const App = () => <Home />
+const App = () => (
+  // <StateSpecificDetails />
+  <Switch>
+    <Route exact path="/" component={Home} />
+    <Route path="/state/:stateCode" component={StateSpecificDetails} />
+    <Route exact path="/about" component={About} />
+  </Switch>
+)
 
 export default App

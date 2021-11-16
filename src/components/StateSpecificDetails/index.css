@@ -1,3 +1,7 @@
+.state-name-container {
+  background-color: aqua;
+}
+
 .state-specific-details-route {
   background-color: #161625;
   min-height: 100vh;

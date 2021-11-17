@@ -5,6 +5,7 @@ import {FcGenericSortingAsc, FcGenericSortingDesc} from 'react-icons/fc'
 import StateWiseTotalRecord from '../StateWiseTotalRecord'
 import CaseCardItem from '../CaseCardItem'
 import SearchRecommendation from '../SearchRecommendation'
+import StateSpecificDetails from '../StateSpecificDetails'
 import Footer from '../Footer'
 import Header from '../Header'
 import './index.css'
@@ -188,6 +189,19 @@ class Home extends Component {
     })
   }
 
+  gotoStateSpecificRoute = stateCode => {
+    const {stateWiseData} = this.state
+    if (stateWiseData) {
+      return (
+        <StateSpecificDetails
+        //   stateCode={stateCode}
+        //   stateWiseData={stateWiseData}
+        />
+      )
+    }
+    return 0
+  }
+
   convertObjectsDataIntoListItemsUsingForInMethod = () => {
     const resultList = []
     const {stateWiseData} = this.state
@@ -196,7 +210,6 @@ class Home extends Component {
     const keyNames = Object.keys(stateWiseData)
 
     keyNames.forEach(keyName => {
-      // console.log(stateWiseData[keyName])
       if (stateWiseData[keyName]) {
         const {total} = stateWiseData[keyName]
         // if the state's covid data is available we will store it or we will store 0
@@ -224,7 +237,6 @@ class Home extends Component {
   }
 
   render() {
-    const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
     const {
       searchInput,
       stateWiseData,
@@ -232,6 +244,8 @@ class Home extends Component {
       showStateStats,
     } = this.state
     console.log(stateWiseData)
+    const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
+
     let filteredStatesList = []
     filteredStatesList = statesList.filter(eachState =>
       eachState.state_name.toLowerCase().includes(searchInput.toLowerCase()),
@@ -265,6 +279,8 @@ class Home extends Component {
                 <SearchRecommendation
                   key={eachState.state_code}
                   state={eachState}
+                  allStates={stateWiseData}
+                  gotoStateSpecificRoute={this.gotoStateSpecificRoute}
                 />
               ))}
             </ul>

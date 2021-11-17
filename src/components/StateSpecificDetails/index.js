@@ -1,4 +1,5 @@
-import {Component} from 'react'
+// import {Component} from 'react'
+import {useLocation} from 'react-router-dom'
 import CaseCardItem from '../CaseCardItem'
 import DistrictItem from '../DistrictItem'
 import './index.css'
@@ -150,100 +151,43 @@ const statesList = [
   },
 ]
 
-class StateSpecificDetails extends Component {
-  state = {allStatesData: [], specificState: ''}
+const StateSpecificDetails = props => {
+  // state = {specificState: ''}
+  const {match} = props
+  // console.log(match)
+  const {params} = match
+  const stateCode = params
+  const specificState = stateCode
+  const location = useLocation()
+  const {state} = location
+  const {stateWiseData} = state
+  const specificStateCode = specificState.stateCode
 
-  componentDidMount() {
-    this.getStateSpecificDetails()
-  }
-
-  getStateSpecificDetails = async () => {
-    const {match} = this.props
-    const {params} = match
-    const {stateCode} = params
-    this.setState({specificState: stateCode})
-    const apiUrl = 'https://apis.ccbp.in/covid19-state-wise-data'
-    const options = {
-      method: 'GET',
-    }
-    const response = await fetch(apiUrl, options)
-    if (response.ok) {
-      const fetchedData = await response.json()
-      this.setState({allStatesData: fetchedData})
-    }
-  }
-
-  convertObjectsDataIntoListItemsUsingForInMethod = () => {
+  const convertObjectsDataIntoListItemsUsingForInMethod = () => {
     const resultList = []
-    const totalDistrictsDataList = []
-    const {allStatesData} = this.state
-    // console.log(allStatesData)
-
-    const getAllDistrictsTotalData = allDistricts => {
-      const districtKeyNames = Object.keys(allDistricts)
-
-      districtKeyNames.forEach(keyName => {
-        // let confirmed
-        if (allDistricts[keyName]) {
-          const {total} = allDistricts[keyName]
-          console.log(total)
-
-          //   const confirmed = total.confirmed ? total.confirmed : 'No Report'
-
-          //   const deceased =
-          //     total.deceased !== undefined ? total.deceased : 'No Report'
-          //   const recovered =
-          //     total.recovered !== undefined ? total.recovered : 'No Report'
-          //   const tested = total.tested !== undefined ? total.tested : 'No Report'
-
-          //   totalDistrictsDataList.push({
-          //     confirmed,
-          //     deceased,
-          //     recovered,
-          //     tested,
-          //   })
-        }
-      })
-      return 0
-
-      // return totalDistrictsDataList
-    }
 
     // getting keys of an object object
-    const stateKeyNames = Object.keys(allStatesData)
+    const stateKeyNames = Object.keys(stateWiseData)
 
     stateKeyNames.forEach(keyName => {
-      // console.log(allStatesData[keyName])
-      if (allStatesData[keyName]) {
-        const {total, districts} = allStatesData[keyName]
-        // console.log(districts)
-        // if the state's covid data is available we will store it or we will store 0
+      if (stateWiseData[keyName]) {
+        const {total} = stateWiseData[keyName]
         const confirmed = total.confirmed ? total.confirmed : 0
         const deceased = total.deceased ? total.deceased : 0
         const recovered = total.recovered ? total.recovered : 0
         const tested = total.tested ? total.tested : 0
-        const population = allStatesData[keyName].meta.population
-          ? allStatesData[keyName].meta.population
+        const population = stateWiseData[keyName].meta.population
+          ? stateWiseData[keyName].meta.population
           : 0
-        const lastUpdated = allStatesData[keyName].meta.last_updated
-          ? allStatesData[keyName].meta.last_updated
+        const lastUpdated = stateWiseData[keyName].meta.last_updated
+          ? stateWiseData[keyName].meta.last_updated
           : 'No Report'
 
-        // const specificDistrict = getAllDistrictsTotalData(districts)
-
-        // const specificDistrict = districts.map(eachDistrict =>
-        //   this.getAllDistrictsTotalData(eachDistrict),
-        // )
-
-        // console.log(specificDistrict)
-        // const districts = getAllDistrictsTotalData(specificDistrict)
-
         let allDistricts = []
-        allDistricts = allStatesData[keyName].districts
+        allDistricts = stateWiseData[keyName].districts
         resultList.push({
           stateCode: keyName,
-          // name: statesList.find(state => state.state_code === keyName),
-          name: statesList.find(state => state.state_code === keyName),
+          name: statesList.find(eachState => eachState.state_code === keyName),
           confirmed,
           deceased,
           recovered,
@@ -258,63 +202,89 @@ class StateSpecificDetails extends Component {
     return resultList
   }
 
-  render() {
-    const {specificState} = this.state
-    const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
-    const state = TabelData.filter(
-      eachTotal => eachTotal.stateCode === specificState,
+  // work here ,note that this current component should be a Class component
+  const getSingleStateData = () => {
+    const TabelData = convertObjectsDataIntoListItemsUsingForInMethod()
+    const searchedState = TabelData.filter(
+      eachTotal => eachTotal.stateCode === specificStateCode,
     )
-    const [particularState] = state
-    // const [a] = particularState
-    console.log(particularState)
-    // const {districts} = particularState
-    // console.log(particularState.districts)
-
-    return (
-      <div className="state-specific-details-route">
-        <div className="state-name-container">state</div>
-        <div className="tested-count-container">
-          <p>Tested</p>
-          <p>{}</p>
-        </div>
-
-        <ul>
-          {state.map(eachState => (
-            <CaseCardItem key={eachState.stateCode} stateTotal={eachState} />
-          ))}
-        </ul>
-
-        {/* <ul>
-          {particularState.districts.forEach(eachState => (
-            <DistrictItem
-              // key={eachState.district.stateCode}
-              districtDetails={eachState}
-            />
-          ))}
-        </ul> */}
-      </div>
-    )
+    return searchedState
   }
+
+  const singleState = getSingleStateData()
+  const [singleSpecificState] = singleState
+  const {districts} = singleSpecificState
+  console.log(districts)
+
+  const convertDistrictObjectIntoList = () => {
+    console.log('finish called')
+    const resultDistrictList = []
+    const districtKeyName = Object.keys(districts)
+    districtKeyName.forEach(keyName => {
+      if (districts[keyName]) {
+        const {total} = districts[keyName]
+        const confirmed = total.confirmed ? total.confirmed : 0
+        const deceased = total.deceased ? total.deceased : 0
+        const recovered = total.recovered ? total.recovered : 0
+        const tested = total.tested ? total.tested : 0
+        // const population = districts[keyName].meta.population
+        //   ? districts[keyName].meta.population
+        //   : 0
+        resultDistrictList.push({
+          districtName: keyName,
+          confirmed,
+          recovered,
+          deceased,
+          tested,
+          active: confirmed - (deceased + recovered),
+        })
+      }
+    })
+    return resultDistrictList
+  }
+
+  const districtDataList = convertDistrictObjectIntoList()
+  console.log(districtDataList)
+
+  //   const showConfirmed = () => {
+  //     this.setState(prevState => ({showConfirmed: !showConfirmed}))
+  //   }
+
+  //   const showActive = () => {
+  //     this.setState(prevState => ({showConfirmed: !showConfirmed}))
+  //   }
+  //   const showDeceased = () => {
+  //     this.setState(prevState => ({showDeceased: !showDeceased}))
+  //   }
+
+  //   const showRecovered = () => {
+  //     this.setState(prevState => ({showDeceased: !prevState.showDeceased}))
+  //   }
+
+  return (
+    <div className="state-specific-details-route">
+      <div className="state-name-container">state</div>
+      <div className="tested-count-container">
+        <p>Tested</p>
+        <p>{}</p>
+      </div>
+
+      <ul>
+        {singleState.map(eachState => (
+          <CaseCardItem key={eachState.stateCode} stateTotal={eachState} />
+        ))}
+      </ul>
+
+      <ul className="districts-data-list">
+        {districtDataList.map(eachState => (
+          <DistrictItem
+            //  key={eachState.district.stateCode}
+            districtDetails={eachState}
+          />
+        ))}
+      </ul>
+    </div>
+  )
 }
 
 export default StateSpecificDetails
-
-/* konni Districts ki  confirmed levu ,need to edit this. */
-
-// const districtsData = TabelData.map(eachData => {
-//   if (eachData) {
-//     return eachData.districts
-//   }
-//   return null
-// })
-// console.log(districtsData)
-
-// {
-//   /* <ul>
-//           {districtsData.map(eachDistrict => (
-//             <div>
-//               <p>{eachDistrict[0].total.confirmed}</p>
-//             </div>
-//           ))}
-//         </ul>  */
-// }

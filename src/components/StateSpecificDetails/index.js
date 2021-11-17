@@ -1,4 +1,4 @@
-// import {Component} from 'react'
+import {Component} from 'react'
 import {useLocation} from 'react-router-dom'
 import CaseCardItem from '../CaseCardItem'
 import DistrictItem from '../DistrictItem'
@@ -151,19 +151,18 @@ const statesList = [
   },
 ]
 
-const StateSpecificDetails = props => {
-  // state = {specificState: ''}
-  const {match} = props
-  // console.log(match)
-  const {params} = match
-  const stateCode = params
-  const specificState = stateCode
-  const location = useLocation()
-  const {state} = location
-  const {stateWiseData} = state
-  const specificStateCode = specificState.stateCode
+class StateSpecificDetails extends Component {
+  state = {
+    showConfirmedCases: true,
+    showActiveCases: false,
+    showRecoveredCases: false,
+    showDeceasedCases: false,
+  }
 
-  const convertObjectsDataIntoListItemsUsingForInMethod = () => {
+  convertObjectsDataIntoListItemsUsingForInMethod = () => {
+    const {location} = this.props
+    const {state} = location
+    const {stateWiseData} = state
     const resultList = []
 
     // getting keys of an object object
@@ -202,21 +201,7 @@ const StateSpecificDetails = props => {
     return resultList
   }
 
-  // work here ,note that this current component should be a Class component
-  const getSingleStateData = () => {
-    const TabelData = convertObjectsDataIntoListItemsUsingForInMethod()
-    const searchedState = TabelData.filter(
-      eachTotal => eachTotal.stateCode === specificStateCode,
-    )
-    return searchedState
-  }
-
-  const singleState = getSingleStateData()
-  const [singleSpecificState] = singleState
-  const {districts} = singleSpecificState
-  console.log(districts)
-
-  const convertDistrictObjectIntoList = () => {
+  convertDistrictObjectIntoList = districts => {
     console.log('finish called')
     const resultDistrictList = []
     const districtKeyName = Object.keys(districts)
@@ -243,48 +228,114 @@ const StateSpecificDetails = props => {
     return resultDistrictList
   }
 
-  const districtDataList = convertDistrictObjectIntoList()
-  console.log(districtDataList)
+  render() {
+    const {
+      showConfirmedCases,
+      showActiveCases,
+      showRecoveredCases,
+      showDeceasedCases,
+    } = this.state
+    const {match, location} = this.props
+    console.log(match)
+    const {params} = match
+    console.log(location)
+    const stateCode = params
+    const specificState = stateCode
+    const {state} = location
+    const {stateWiseData} = state
+    console.log(stateWiseData)
+    const specificStateCode = specificState.stateCode
 
-  //   const showConfirmed = () => {
-  //     this.setState(prevState => ({showConfirmed: !showConfirmed}))
-  //   }
+    const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
+    const singleState = TabelData.filter(
+      eachTotal => eachTotal.stateCode === specificStateCode,
+    )
 
-  //   const showActive = () => {
-  //     this.setState(prevState => ({showConfirmed: !showConfirmed}))
-  //   }
-  //   const showDeceased = () => {
-  //     this.setState(prevState => ({showDeceased: !showDeceased}))
-  //   }
+    const [singleSpecificState] = singleState
+    const {districts} = singleSpecificState
 
-  //   const showRecovered = () => {
-  //     this.setState(prevState => ({showDeceased: !prevState.showDeceased}))
-  //   }
+    const districtDataList = this.convertDistrictObjectIntoList(districts)
+    console.log(districtDataList)
 
-  return (
-    <div className="state-specific-details-route">
-      <div className="state-name-container">state</div>
-      <div className="tested-count-container">
-        <p>Tested</p>
-        <p>{}</p>
+    // const singleState = getSingleStateData()
+
+    const showConfirmed = () => {
+      this.setState({
+        showConfirmedCases: true,
+        showActiveCases: false,
+        showDeceasedCases: false,
+        showRecoveredCases: false,
+      })
+    }
+
+    const showActive = () => {
+      this.setState({
+        showConfirmedCases: false,
+        showActiveCases: true,
+        showDeceasedCases: false,
+        showRecoveredCases: false,
+      })
+    }
+
+    const showDeceased = () => {
+      this.setState({
+        showConfirmedCases: false,
+        showActiveCases: false,
+        showDeceasedCases: true,
+        showRecoveredCases: false,
+      })
+    }
+
+    const showRecovered = () => {
+      this.setState({
+        showConfirmedCases: false,
+        showActiveCases: false,
+        showDeceasedCases: false,
+        showRecoveredCases: true,
+      })
+    }
+
+    return (
+      <div className="state-specific-details-route">
+        <div className="state-name-container">state</div>
+        <div className="tested-count-container">
+          <p>Tested</p>
+          <p>{}</p>
+        </div>
+
+        <ul>
+          {singleState.map(eachState => (
+            <CaseCardItem
+              key={eachState.stateCode}
+              showConfirmed={showConfirmed}
+              showActive={showActive}
+              showRecovered={showRecovered}
+              showDeceased={showDeceased}
+              stateTotal={eachState}
+              showActiveCases={showActiveCases}
+              showDeceasedCases={showDeceasedCases}
+              showRecoveredCases={showRecoveredCases}
+              showConfirmedCases={showConfirmedCases}
+            />
+          ))}
+        </ul>
+
+        <h1 className="districts-heading">Top Districts</h1>
+
+        <ul className="districts-data-list">
+          {districtDataList.map(eachState => (
+            <DistrictItem
+              //  key={eachState.district.stateCode}
+              districtDetails={eachState}
+              showActiveCases={showActiveCases}
+              showDeceasedCases={showDeceasedCases}
+              showRecoveredCases={showRecoveredCases}
+              showConfirmedCases={showConfirmedCases}
+            />
+          ))}
+        </ul>
       </div>
-
-      <ul>
-        {singleState.map(eachState => (
-          <CaseCardItem key={eachState.stateCode} stateTotal={eachState} />
-        ))}
-      </ul>
-
-      <ul className="districts-data-list">
-        {districtDataList.map(eachState => (
-          <DistrictItem
-            //  key={eachState.district.stateCode}
-            districtDetails={eachState}
-          />
-        ))}
-      </ul>
-    </div>
-  )
+    )
+  }
 }
-
 export default StateSpecificDetails

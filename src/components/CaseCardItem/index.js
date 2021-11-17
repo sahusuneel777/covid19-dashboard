@@ -1,17 +1,18 @@
 import './index.css'
 
 const CaseCardItem = props => {
-  const {stateTotal} = props
   const {
-    confirmed,
-    deceased,
-    recovered,
-    active,
+    stateTotal,
     showConfirmed,
     showActive,
     showRecovered,
     showDeceased,
-  } = stateTotal
+    showActiveCases,
+    showDeceasedCases,
+    showRecoveredCases,
+    showConfirmedCases,
+  } = props
+  const {confirmed, deceased, recovered, active} = stateTotal
   // const stateName = name !== undefined ? name.state_name : null
   const onClickConfirmed = () => {
     showConfirmed()
@@ -29,12 +30,24 @@ const CaseCardItem = props => {
     showDeceased()
   }
 
+  const activeConfirmedClass = showConfirmedCases
+    ? 'confirmed-active-class'
+    : ''
+  const activeActiveClass = showActiveCases ? 'active-active-class' : ''
+
+  const activeRecoveredClass = showRecoveredCases
+    ? `recovered-active-class`
+    : ''
+
+  const activeDeceasedClass = showDeceasedCases ? `deceased-active-class` : ''
+
   return (
     <ul className="diff-type-cards">
       <li
         testid="countryWideConfirmedCases"
         onClick={onClickConfirmed}
-        className="country-wide confirmed"
+        className={`country-wide confirmed ${activeConfirmedClass}`}
+        // className="country-wide confirmed "
       >
         <h1 className="case-card-heading">confirmed</h1>
         <img
@@ -46,7 +59,8 @@ const CaseCardItem = props => {
       <li
         testid="countryWideActiveCases"
         onClick={onClickActive}
-        className="country-wide active"
+        className={`country-wide active ${activeActiveClass}`}
+        // className="country-wide active"
       >
         <h1 className="case-card-heading">Active</h1>
         <img
@@ -58,7 +72,8 @@ const CaseCardItem = props => {
       <li
         testid="countryWideRecoveredCases"
         onClick={onClickRecovered}
-        className="country-wide recovered"
+        className={`country-wide recovered ${activeRecoveredClass}`}
+        // className="country-wide recovered"
       >
         <h1 className="case-card-heading">Recovered</h1>
         <img
@@ -71,7 +86,8 @@ const CaseCardItem = props => {
       <li
         testid="countryWideDeceasedCases"
         onClick={onClickDeceased}
-        className="country-wide deceased"
+        className={`country-wide deceased ${activeDeceasedClass}`}
+        // className="country-wide deceased"
       >
         <h1 className="case-card-heading">Deceased</h1>
         <img

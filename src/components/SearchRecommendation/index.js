@@ -5,7 +5,7 @@ import './index.css'
 const SearchRecommendation = props => {
   const {state, allStates, gotoStateSpecificRoute} = props
   const {stateCode, stateName} = state
-  // console.log(state)
+
   const onClickSearchItem = () => {
     gotoStateSpecificRoute(stateCode)
   }

@@ -111,3 +111,12 @@
   flex-direction: column;
   align-items: center;
 }
+
+.covid-loader-container {
+  min-height: 95vh;
+  background-color: #161625;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

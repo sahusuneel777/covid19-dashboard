@@ -1,13 +1,14 @@
 import {Component} from 'react'
-import {Link} from 'react-dom'
+
 import {BsSearch} from 'react-icons/bs'
 import {FcGenericSortingAsc, FcGenericSortingDesc} from 'react-icons/fc'
+import Loader from 'react-loader-spinner'
 import StateWiseTotalRecord from '../StateWiseTotalRecord'
 import CaseCardItem from '../CaseCardItem'
 import SearchRecommendation from '../SearchRecommendation'
 import StateSpecificDetails from '../StateSpecificDetails'
 import Footer from '../Footer'
-import Header from '../Header'
+
 import './index.css'
 
 const statesList = [
@@ -157,12 +158,19 @@ const statesList = [
   },
 ]
 
+const apiStatusConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  inProgress: 'IN_PROGRESS',
+}
+
 class Home extends Component {
   state = {
     stateWiseData: {},
     showStateStats: true,
     showSearchSuggestions: false,
     searchInput: '',
+    apiStatus: apiStatusConstants.initial,
   }
 
   componentDidMount() {
@@ -170,15 +178,21 @@ class Home extends Component {
   }
 
   getAllStatesData = async () => {
+    this.setState({
+      apiStatus: apiStatusConstants.inProgress,
+    })
     const apiUrl = 'https://apis.ccbp.in/covid19-state-wise-data'
     const options = {
       method: 'GET',
     }
-    const response = await fetch(apiUrl, options)
-    if (response.ok) {
-      const fetchedData = await response.json()
-      this.setState({stateWiseData: fetchedData})
-    }
+
+    const response1 = await fetch(apiUrl, options)
+
+    const fetchedData1 = await response1.json()
+    this.setState({
+      stateWiseData: fetchedData1,
+      apiStatus: apiStatusConstants.success,
+    })
   }
 
   onchangeSearchInput = event => {
@@ -189,15 +203,10 @@ class Home extends Component {
     })
   }
 
-  gotoStateSpecificRoute = stateCode => {
+  gotoStateSpecificRoute = () => {
     const {stateWiseData} = this.state
     if (stateWiseData) {
-      return (
-        <StateSpecificDetails
-        //   stateCode={stateCode}
-        //   stateWiseData={stateWiseData}
-        />
-      )
+      return <StateSpecificDetails />
     }
     return 0
   }
@@ -236,14 +245,14 @@ class Home extends Component {
     return resultList
   }
 
-  render() {
+  renderCovidCasesData = () => {
     const {
-      searchInput,
       stateWiseData,
+      searchInput,
       showSearchSuggestions,
       showStateStats,
     } = this.state
-    console.log(stateWiseData)
+
     const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
 
     let filteredStatesList = []
@@ -261,91 +270,112 @@ class Home extends Component {
     )
 
     return (
-      <>
-        <Header />
-        <div className="home-route-container">
-          <div className="search-container">
-            <BsSearch className="search-icon" />
-            <input
-              type="search"
-              className="search-input"
-              placeholder="Enter the State"
-              onChange={this.onchangeSearchInput}
-            />
-          </div>
-          {showSearchSuggestions && (
-            <ul className="search-recommendation-list">
-              {updatedFilteredStates.map(eachState => (
-                <SearchRecommendation
-                  key={eachState.state_code}
-                  state={eachState}
-                  allStates={stateWiseData}
-                  gotoStateSpecificRoute={this.gotoStateSpecificRoute}
-                />
-              ))}
-            </ul>
-          )}
-
-          {showStateStats && (
-            <div className="stats-section">
-              <div className="diff-type-cards">
-                {TabelData.map(
-                  eachTotal =>
-                    eachTotal.name === undefined && (
-                      <CaseCardItem
-                        key={eachTotal.confirmed}
-                        stateTotal={eachTotal}
-                      />
-                    ),
-                )}
-              </div>
-
-              <ul
-                className="state-wise-total-table-record"
-                testid="stateWiseCovidDataTable"
-              >
-                <li className="total-record-heading">
-                  <div className="sorting-item">
-                    <p className="table-heading">States/UT</p>
-                    <button
-                      type="button"
-                      className="sort-icon"
-                      testid="ascendingSort"
-                    >
-                      <FcGenericSortingAsc />
-                    </button>
-                    <button
-                      type="button"
-                      className="sort-icon"
-                      testid="descendingSort"
-                    >
-                      <FcGenericSortingDesc />
-                    </button>
-                  </div>
-                  <p className="table-heading">Confirmed</p>
-                  <p className="table-heading">Active</p>
-                  <p className="table-heading">Recovered</p>
-                  <p className="table-heading">Deceased</p>
-                  <p className="table-heading">Population</p>
-                </li>
-                <hr className="hr-line" />
-                {TabelData.map(
-                  eachTotal =>
-                    eachTotal.name !== undefined && (
-                      <StateWiseTotalRecord
-                        key={eachTotal.confirmed}
-                        stateTotal={eachTotal}
-                      />
-                    ),
-                )}
-              </ul>
-            </div>
-          )}
-          <Footer />
+      <div className="home-route-container">
+        <div className="search-container">
+          <BsSearch className="search-icon" />
+          <input
+            type="search"
+            className="search-input"
+            placeholder="Enter the State"
+            onChange={this.onchangeSearchInput}
+          />
         </div>
-      </>
-      // </Link>
+        {showSearchSuggestions && (
+          <ul className="search-recommendation-list">
+            {updatedFilteredStates.map(eachState => (
+              <SearchRecommendation
+                key={eachState.state_code}
+                state={eachState}
+                allStates={stateWiseData}
+                gotoStateSpecificRoute={this.gotoStateSpecificRoute}
+              />
+            ))}
+          </ul>
+        )}
+
+        {showStateStats && (
+          <div className="stats-section">
+            <div className="diff-type-cards">
+              {TabelData.map(
+                eachTotal =>
+                  eachTotal.name === undefined && (
+                    <CaseCardItem
+                      key={eachTotal.confirmed}
+                      stateTotal={eachTotal}
+                    />
+                  ),
+              )}
+            </div>
+
+            <ul
+              className="state-wise-total-table-record"
+              testid="stateWiseCovidDataTable"
+            >
+              <li className="total-record-heading">
+                <div className="sorting-item">
+                  <p className="table-heading">States/UT</p>
+                  <button
+                    type="button"
+                    className="sort-icon"
+                    testid="ascendingSort"
+                  >
+                    <FcGenericSortingAsc />
+                  </button>
+                  <button
+                    type="button"
+                    className="sort-icon"
+                    testid="descendingSort"
+                  >
+                    <FcGenericSortingDesc />
+                  </button>
+                </div>
+                <p className="table-heading">Confirmed</p>
+                <p className="table-heading">Active</p>
+                <p className="table-heading">Recovered</p>
+                <p className="table-heading">Deceased</p>
+                <p className="table-heading">Population</p>
+              </li>
+              <hr className="hr-line" />
+              {TabelData.map(
+                eachTotal =>
+                  eachTotal.name !== undefined && (
+                    <StateWiseTotalRecord
+                      key={eachTotal.confirmed}
+                      stateTotal={eachTotal}
+                    />
+                  ),
+              )}
+            </ul>
+          </div>
+        )}
+        <Footer />
+      </div>
     )
+  }
+
+  renderLoadingView = () => (
+    <div className="covid-loader-container">
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
+  renderCovidData = () => {
+    const {apiStatus} = this.state
+
+    switch (apiStatus) {
+      case apiStatusConstants.success:
+        return this.renderCovidCasesData()
+      //   case apiStatusConstants.failure:
+      //     return this.renderFailureView()
+      case apiStatusConstants.inProgress:
+        return this.renderLoadingView()
+      default:
+        return null
+    }
+  }
+
+  render() {
+    return <div>{this.renderCovidData()}</div>
   }
 }
 

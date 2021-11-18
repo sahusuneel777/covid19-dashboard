@@ -1,7 +1,7 @@
 import {Component} from 'react'
-import {useLocation} from 'react-router-dom'
 import CaseCardItem from '../CaseCardItem'
 import DistrictItem from '../DistrictItem'
+import TimeLineData from '../TimeLineData'
 import './index.css'
 
 const statesList = [
@@ -236,26 +236,28 @@ class StateSpecificDetails extends Component {
       showDeceasedCases,
     } = this.state
     const {match, location} = this.props
-    console.log(match)
+    // console.log(match)
     const {params} = match
-    console.log(location)
+    // console.log(location)
     const stateCode = params
     const specificState = stateCode
     const {state} = location
     const {stateWiseData} = state
-    console.log(stateWiseData)
+    // console.log(stateWiseData)
     const specificStateCode = specificState.stateCode
 
     const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
     const singleState = TabelData.filter(
       eachTotal => eachTotal.stateCode === specificStateCode,
     )
+    console.log(`s1`, singleState)
 
     const [singleSpecificState] = singleState
+    console.log(`s2`, singleSpecificState)
     const {districts} = singleSpecificState
 
     const districtDataList = this.convertDistrictObjectIntoList(districts)
-    console.log(districtDataList)
+    // console.log(districtDataList)
 
     // const singleState = getSingleStateData()
 
@@ -325,7 +327,7 @@ class StateSpecificDetails extends Component {
         <ul className="districts-data-list">
           {districtDataList.map(eachState => (
             <DistrictItem
-              //  key={eachState.district.stateCode}
+              key={eachState.districtName}
               districtDetails={eachState}
               showActiveCases={showActiveCases}
               showDeceasedCases={showDeceasedCases}
@@ -334,6 +336,7 @@ class StateSpecificDetails extends Component {
             />
           ))}
         </ul>
+        <TimeLineData />
       </div>
     )
   }

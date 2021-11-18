@@ -238,22 +238,20 @@ class StateSpecificDetails extends Component {
     const {match, location} = this.props
     // console.log(match)
     const {params} = match
-    // console.log(location)
+    // console.log(`lo`, location)
     const stateCode = params
     const specificState = stateCode
-    const {state} = location
-    const {stateWiseData} = state
-    // console.log(stateWiseData)
+
     const specificStateCode = specificState.stateCode
 
     const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
     const singleState = TabelData.filter(
       eachTotal => eachTotal.stateCode === specificStateCode,
     )
-    console.log(`s1`, singleState)
+    // console.log(`s1`, singleState)
 
     const [singleSpecificState] = singleState
-    console.log(`s2`, singleSpecificState)
+    // console.log(`s2`, singleSpecificState)
     const {districts} = singleSpecificState
 
     const districtDataList = this.convertDistrictObjectIntoList(districts)

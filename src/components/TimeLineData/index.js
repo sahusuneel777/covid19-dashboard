@@ -10,31 +10,14 @@ const apiStatusConstants = {
 }
 
 class TimeLineData extends Component {
-  state = {
-    timeLineData: [],
-  }
-
-  componentDidMount() {
-    this.getTimeLineData()
-  }
-
-  getTimeLineData = async () => {
-    const timeLineApiUrl = 'https://apis.ccbp.in/covid19-timelines-data'
-    const options = {
-      method: 'GET',
-    }
-    const response = await fetch(timeLineApiUrl, options)
-    const fetchedData = await response.json()
-    this.setState({timeLineData: fetchedData})
-  }
-
   convertObjectsDataIntoListItemsUsingForInMethod = () => {
     const singleTimeLineResultList = []
-    const {timeLineData} = this.state
+    const {location} = this.props
+    const {state} = location
+    const {timeLineData} = state
     const {match} = this.props
     const {params} = match
     const {stateCode} = params
-    // console.log(stateCode)
 
     const keyNames = Object.keys(timeLineData)
 
@@ -44,34 +27,70 @@ class TimeLineData extends Component {
     return singleTimeLineResultList
   }
 
-  //   convertDatesObjectIntoList = dates => {
-  //     const lastTenDates = []
-  //     const keyNames = Object.keys(dates)
-  //     keyNames.forEach(eachKey => {
-  //       if (dates[eachKey]) {
-  //         lastTenDates.push(eachKey)
-  //       }
-  //     })
-  //     return lastTenDates
-  //   }
+  getAllDates = dates => {
+    let sample = {}
+    const keyNames = Object.keys(dates)
+
+    keyNames.forEach(eachKey => {
+      if (dates[eachKey]) {
+        sample = dates[eachKey]
+        // console.log(sample)
+      }
+    })
+    return sample
+  }
+
+  convertAllDatesObjectintoConfirmedList = allDates => {
+    const lastTenDatesConfirmed = []
+    const lastTenDatesActive = []
+    const lastTenDatesDeceased = []
+    const lastTenDatesRecovered = []
+
+    const keyNames = Object.keys(allDates)
+    const reversedKeyNames = keyNames.reverse()
+
+    reversedKeyNames.forEach(eachKey => {
+      if (eachKey !== undefined) {
+        const {delta} = allDates[eachKey]
+        // console.log(delta.confirmed)
+        const confirmed = delta.confirmed ? delta.confirmed : 0
+        const deceased = delta.deceased ? delta.deceased : 0
+        const recovered = delta.recovered ? delta.recovered : 0
+        const tested = delta.tested ? delta.tested : 0
+
+        if (lastTenDatesConfirmed.length < 10) {
+          lastTenDatesConfirmed.push(confirmed)
+        }
+        // if (lastTenDatesDeceased.length < 10) {
+        //   lastTenDatesConfirmed.push(deceased)
+        // }
+        // if (lastTenDatesRecovered.length < 10) {
+        //   lastTenDatesConfirmed.push(recovered)
+        // }
+        // if (lastTenDatesActive.length < 10) {
+        //   lastTenDatesConfirmed.push(tested)
+        // }
+      }
+    })
+    return lastTenDatesConfirmed
+  }
 
   render() {
-    const {timeLineData} = this.state
-    //  let sampleDate = {}
-
     const singleTimeLineDataList = this.convertObjectsDataIntoListItemsUsingForInMethod()
-    console.log(singleTimeLineDataList)
+    // console.log(singleTimeLineDataList)
 
     const [dates] = singleTimeLineDataList
     // const {dates} = dates
-
     console.log(dates)
-    // const keyNameList = Object.keys(dates)
-    // keyNameList.forEach(each => {
-    //   console.log(each)
-    //   return 0
-    // })
-    // const datesList = this.convertDatesObjectIntoList(dates)
+
+    const allDates = this.getAllDates(dates)
+    console.log(allDates)
+
+    const tenDaysConfirmedCases = this.convertAllDatesObjectintoConfirmedList(
+      allDates,
+    )
+    // const tenDaysActiveCases = this.convertAllDatesObjectintoConfirmedList()
+    // console.log(tenDaysConfirmedCases)
 
     return (
       <div>

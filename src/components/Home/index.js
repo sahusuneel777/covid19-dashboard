@@ -167,6 +167,7 @@ const apiStatusConstants = {
 class Home extends Component {
   state = {
     stateWiseData: {},
+    timeLineData: {},
     showStateStats: true,
     showSearchSuggestions: false,
     searchInput: '',
@@ -182,14 +183,18 @@ class Home extends Component {
       apiStatus: apiStatusConstants.inProgress,
     })
     const apiUrl = 'https://apis.ccbp.in/covid19-state-wise-data'
+    const timeLineUrl = 'https://apis.ccbp.in/covid19-timelines-data'
     const options = {
       method: 'GET',
     }
 
     const response1 = await fetch(apiUrl, options)
-
     const fetchedData1 = await response1.json()
+
+    const response2 = await fetch(timeLineUrl, options)
+    const fetchedData2 = await response2.json()
     this.setState({
+      timeLineData: fetchedData2,
       stateWiseData: fetchedData1,
       apiStatus: apiStatusConstants.success,
     })
@@ -248,6 +253,7 @@ class Home extends Component {
   renderCovidCasesData = () => {
     const {
       stateWiseData,
+      timeLineData,
       searchInput,
       showSearchSuggestions,
       showStateStats,
@@ -284,9 +290,10 @@ class Home extends Component {
           <ul className="search-recommendation-list">
             {updatedFilteredStates.map(eachState => (
               <SearchRecommendation
-                key={eachState.state_code}
+                key={eachState.stateCode}
                 state={eachState}
                 allStates={stateWiseData}
+                timeLineData={timeLineData}
                 gotoStateSpecificRoute={this.gotoStateSpecificRoute}
               />
             ))}

@@ -260,10 +260,34 @@ class Home extends Component {
       showStateStats,
     } = this.state
 
-    console.log(timeLineData)
+    // console.log(timeLineData)
 
     const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
-    console.log(TabelData)
+    console.log(`tableData`, TabelData)
+
+    const sortByCaseKeyDesc = (array, key) =>
+      array.sort((a, b) => {
+        const x = a[key]
+        const y = b[key]
+        return x > y ? -1 : 1
+      })
+
+    const sortByCaseKeyAsc = (array, key) =>
+      array.sort((a, b) => {
+        const x = a[key]
+        const y = b[key]
+        return x > y ? 1 : -1
+      })
+
+    const sortAscending = () => {
+      const sortedStateArray = sortByCaseKeyAsc(TabelData, 'stateCode')
+      console.log(sortedStateArray)
+    }
+
+    const sortDescending = () => {
+      const sortedStateArrayrev = sortByCaseKeyDesc(TabelData, 'stateCode')
+      console.log(sortedStateArrayrev)
+    }
 
     let filteredStatesList = []
     filteredStatesList = statesList.filter(eachState =>
@@ -278,17 +302,6 @@ class Home extends Component {
     const updatedFilteredStates = filteredStatesList.map(eachState =>
       getUpdatedFilteredStates(eachState),
     )
-
-    // const sortAscending = TableData => {
-    //   TabelData.map(eachData => {
-    //     const {name} = eachData
-    //     if (name !== undefined) {
-    //       console.log(name)
-    // }
-
-    const sortAscending = () => {}
-
-    const sortDescending = () => {}
 
     return (
       <div className="home-route-container">

@@ -158,6 +158,7 @@ class StateSpecificDetails extends Component {
     showActiveCases: false,
     showRecoveredCases: false,
     showDeceasedCases: false,
+    activeCaseClass: 'confirmed',
   }
 
   convertObjectsDataIntoListItemsUsingForInMethod = () => {
@@ -203,7 +204,7 @@ class StateSpecificDetails extends Component {
   }
 
   convertDistrictObjectIntoList = districts => {
-    console.log('finish called')
+    console.log('convert district called')
     const resultDistrictList = []
     const districtKeyName = Object.keys(districts)
     districtKeyName.forEach(keyName => {
@@ -235,6 +236,7 @@ class StateSpecificDetails extends Component {
       showActiveCases,
       showRecoveredCases,
       showDeceasedCases,
+      activeCaseClass,
     } = this.state
     const {match, location} = this.props
     // console.log(match)
@@ -245,9 +247,9 @@ class StateSpecificDetails extends Component {
     const specificState = stateCode
 
     const specificStateCode = specificState.stateCode
-    console.log(specificStateCode)
+    // console.log(specificStateCode)
     const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
-    console.log(TabelData)
+    // console.log(TabelData)
     const singleState = TabelData.filter(
       eachTotal => eachTotal.stateCode === specificStateCode,
     )
@@ -257,9 +259,7 @@ class StateSpecificDetails extends Component {
 
     let lastUpdatedDate = oneState.lastUpdated
     lastUpdatedDate = new Date(lastUpdatedDate).toDateString()
-    console.log(lastUpdatedDate)
-    // console.log(new Date().toDateString())
-    // console.log(new Date())
+
     const nameOfState = statesList.filter(
       eachState => eachState.state_code === specificStateCode,
     )
@@ -272,9 +272,17 @@ class StateSpecificDetails extends Component {
     const {districts} = singleSpecificState
 
     const districtDataList = this.convertDistrictObjectIntoList(districts)
-    console.log(districtDataList)
+    // console.log(districtDataList)
 
-    // const singleState = getSingleStateData()
+    const sortByCaseKey = (array, key) =>
+      array.sort((a, b) => {
+        const x = a[key]
+        const y = b[key]
+        return x > y ? -1 : 1
+      })
+
+    const sortedArray = sortByCaseKey(districtDataList, activeCaseClass)
+    console.log(`sorted_case_array`, sortedArray)
 
     const showConfirmed = () => {
       this.setState({
@@ -282,6 +290,7 @@ class StateSpecificDetails extends Component {
         showActiveCases: false,
         showDeceasedCases: false,
         showRecoveredCases: false,
+        activeCaseClass: 'confirmed',
       })
     }
 
@@ -291,6 +300,7 @@ class StateSpecificDetails extends Component {
         showActiveCases: true,
         showDeceasedCases: false,
         showRecoveredCases: false,
+        activeCaseClass: 'active',
       })
     }
 
@@ -300,6 +310,7 @@ class StateSpecificDetails extends Component {
         showActiveCases: false,
         showDeceasedCases: true,
         showRecoveredCases: false,
+        activeCaseClass: 'deceased',
       })
     }
 
@@ -309,6 +320,7 @@ class StateSpecificDetails extends Component {
         showActiveCases: false,
         showDeceasedCases: false,
         showRecoveredCases: true,
+        activeCaseClass: 'recovered',
       })
     }
 

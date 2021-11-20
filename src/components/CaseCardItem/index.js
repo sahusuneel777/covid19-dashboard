@@ -54,7 +54,7 @@ const CaseCardItem = props => {
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521128/mini-project/check-mark_1_e83qpy.png"
           alt="country wide confirmed cases pic"
         />
-        <p className="count">{confirmed}</p>
+        <p className="count confirmed">{confirmed}</p>
       </li>
       <li
         testid="countryWideActiveCases"

@@ -2,6 +2,7 @@ import {Component} from 'react'
 import CaseCardItem from '../CaseCardItem'
 import DistrictItem from '../DistrictItem'
 import TimeLineData from '../TimeLineData'
+import Footer from '../Footer'
 import './index.css'
 
 const statesList = [
@@ -240,22 +241,38 @@ class StateSpecificDetails extends Component {
     const {params} = match
     // console.log(`lo`, location)
     const stateCode = params
+
     const specificState = stateCode
 
     const specificStateCode = specificState.stateCode
-
+    console.log(specificStateCode)
     const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
+    console.log(TabelData)
     const singleState = TabelData.filter(
       eachTotal => eachTotal.stateCode === specificStateCode,
     )
-    // console.log(`s1`, singleState)
+
+    const [oneState] = singleState
+    const testedCount = oneState.tested
+
+    let lastUpdatedDate = oneState.lastUpdated
+    lastUpdatedDate = new Date(lastUpdatedDate).toDateString()
+    console.log(lastUpdatedDate)
+    // console.log(new Date().toDateString())
+    // console.log(new Date())
+    const nameOfState = statesList.filter(
+      eachState => eachState.state_code === specificStateCode,
+    )
+    const [State] = nameOfState
+    const StateName = State.state_name
+    // console.log(`s1`, State.state_name)
 
     const [singleSpecificState] = singleState
     // console.log(`s2`, singleSpecificState)
     const {districts} = singleSpecificState
 
     const districtDataList = this.convertDistrictObjectIntoList(districts)
-    // console.log(districtDataList)
+    console.log(districtDataList)
 
     // const singleState = getSingleStateData()
 
@@ -297,13 +314,18 @@ class StateSpecificDetails extends Component {
 
     return (
       <div className="state-specific-details-route">
-        <div className="state-name-container">state</div>
-        <div className="tested-count-container">
-          <p>Tested</p>
-          <p>{}</p>
+        <div className="banner-card">
+          <div className="state-details-container">
+            <div className="state-name-card">{StateName}</div>
+            <p className="last-update">{`Last Updated on ${lastUpdatedDate}`}</p>
+          </div>
+          <div className="tested-count-container">
+            <p className="tested-head">Tested</p>
+            <p className="test-count">{testedCount}</p>
+          </div>
         </div>
 
-        <ul>
+        <ul className="cases-types">
           {singleState.map(eachState => (
             <CaseCardItem
               key={eachState.stateCode}
@@ -335,6 +357,7 @@ class StateSpecificDetails extends Component {
           ))}
         </ul>
         <TimeLineData />
+        <Footer />
       </div>
     )
   }

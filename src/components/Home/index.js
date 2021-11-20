@@ -219,6 +219,7 @@ class Home extends Component {
   convertObjectsDataIntoListItemsUsingForInMethod = () => {
     const resultList = []
     const {stateWiseData} = this.state
+    console.log(`stateWiseData`, stateWiseData)
 
     // getting keys of an object object
     const keyNames = Object.keys(stateWiseData)
@@ -259,7 +260,10 @@ class Home extends Component {
       showStateStats,
     } = this.state
 
+    console.log(timeLineData)
+
     const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
+    console.log(TabelData)
 
     let filteredStatesList = []
     filteredStatesList = statesList.filter(eachState =>
@@ -274,6 +278,17 @@ class Home extends Component {
     const updatedFilteredStates = filteredStatesList.map(eachState =>
       getUpdatedFilteredStates(eachState),
     )
+
+    // const sortAscending = TableData => {
+    //   TabelData.map(eachData => {
+    //     const {name} = eachData
+    //     if (name !== undefined) {
+    //       console.log(name)
+    // }
+
+    const sortAscending = () => {}
+
+    const sortDescending = () => {}
 
     return (
       <div className="home-route-container">
@@ -325,6 +340,7 @@ class Home extends Component {
                     type="button"
                     className="sort-icon"
                     testid="ascendingSort"
+                    onClick={sortAscending}
                   >
                     <FcGenericSortingAsc />
                   </button>
@@ -332,6 +348,7 @@ class Home extends Component {
                     type="button"
                     className="sort-icon"
                     testid="descendingSort"
+                    onClick={sortDescending}
                   >
                     <FcGenericSortingDesc />
                   </button>

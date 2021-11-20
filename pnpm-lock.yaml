@@ -4,6 +4,7 @@ dependencies:
   '@testing-library/user-event': 12.6.2
   '@wojtekmaj/enzyme-adapter-react-17': 0.6.3_ed988ebff08079c40ff9e87e2acc78b3
   chalk: 4.1.0
+  date-fns: 2.25.0
   enzyme: 3.11.0
   history: 5.0.1
   js-cookie: 3.0.1
@@ -4810,6 +4811,12 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-X5eWTSXO/BJmpdIKCRuKUgSCgAN0OwliVK3yPKbwIWU1Tdw5BRajxlzMidvh+gwko9AfQ9zIj52pzF91Q3YAvQ==
+  /date-fns/2.25.0:
+    dev: false
+    engines:
+      node: '>=0.11'
+    resolution:
+      integrity: sha512-ovYRFnTrbGPD4nqaEqescPEv1mNwvt+UTqI3Ay9SzNtey9NZnYu6E2qCcBBgJ6/2VF1zGGygpyTDITqpQQ5e+w==
   /debug/2.6.9:
     dependencies:
       ms: 2.0.0
@@ -13765,6 +13772,7 @@ specifiers:
   '@testing-library/user-event': 12.6.2
   '@wojtekmaj/enzyme-adapter-react-17': 0.6.3
   chalk: 4.1.0
+  date-fns: 2.25.0
   enzyme: 3.11.0
   eslint-config-airbnb: 18.2.1
   eslint-config-prettier: 8.1.0

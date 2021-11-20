@@ -1,0 +1,65 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+.bar {
+  font-size: 10px;
+  font-weight: 300;
+  /* background-color: rgb(53, 61, 68); */
+  border-radius: 5px;
+}
+
+.bar:hover {
+  color: none;
+}
+
+.bar-confirmed-chart {
+  background-color: #331427;
+  margin-bottom: 20px;
+  width: 90%;
+}
+
+.bar-active-chart {
+  background-color: #132240;
+  margin-bottom: 20px;
+}
+
+.bar-recovered-chart {
+  background-color: #182829;
+  margin-bottom: 20px;
+}
+
+.bar-deceased-chart {
+  background-color: #212230;
+  margin-bottom: 20px;
+}
+.bar-tested-chart {
+  background-color: #230f41;
+}
+.bar-vaccinated-chart {
+  background-color: #2e1e30;
+}
+
+.action-button {
+  background-color: #1e1e30;
+  color: #64748b;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+  padding-right: 20px;
+  padding-left: 20px;
+  line-height: 2;
+  margin-right: 2px;
+  cursor: pointer;
+}
+
+.active-class {
+  color: #e2e8f0;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

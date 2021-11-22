@@ -348,59 +348,61 @@ class Home extends Component {
                     ),
                 )}
               </div>
-              {/* <div className="state-wise-records"> */}
-              <ul
-                className="state-wise-total-table-record"
-                testid="stateWiseCovidDataTable"
-              >
-                <li className="total-record-heading">
-                  <div className="sorting-item">
-                    <p className="table-heading">States/UT</p>
-                    <button
-                      type="button"
-                      className="sort-icon"
-                      testid="ascendingSort"
-                      onClick={this.sortAscending}
-                    >
-                      <FcGenericSortingAsc />
-                    </button>
-                    <button
-                      type="button"
-                      className="sort-icon"
-                      testid="descendingSort"
-                      onClick={this.sortDescending}
-                    >
-                      <FcGenericSortingDesc />
-                    </button>
-                  </div>
-                  <p className="table-heading">Confirmed</p>
-                  <p className="table-heading">Active</p>
-                  <p className="table-heading">Recovered</p>
-                  <p className="table-heading">Deceased</p>
-                  <p className="table-heading">Population</p>
-                </li>
-                <hr className="hr-line" />
-                {showAscSort &&
-                  TabelData.map(
-                    eachTotal =>
-                      eachTotal.name !== undefined && (
-                        <StateWiseTotalRecord
-                          key={eachTotal.confirmed}
-                          stateTotal={eachTotal}
-                        />
-                      ),
-                  )}
-                {showDescSort &&
-                  tableStateDataList.map(
-                    eachTotal =>
-                      eachTotal.name !== undefined && (
-                        <StateWiseTotalRecord
-                          key={eachTotal.confirmed}
-                          stateTotal={eachTotal}
-                        />
-                      ),
-                  )}
-              </ul>
+
+              <div className="state-wise-records">
+                <ul
+                  className="state-wise-total-table-record"
+                  testid="stateWiseCovidDataTable"
+                >
+                  <li className="total-record-heading">
+                    <div className="sorting-item">
+                      <p className="table-heading">States/UT</p>
+                      <button
+                        type="button"
+                        className="sort-icon"
+                        testid="ascendingSort"
+                        onClick={this.sortAscending}
+                      >
+                        <FcGenericSortingAsc />
+                      </button>
+                      <button
+                        type="button"
+                        className="sort-icon"
+                        testid="descendingSort"
+                        onClick={this.sortDescending}
+                      >
+                        <FcGenericSortingDesc />
+                      </button>
+                    </div>
+                    <p className="table-heading">Confirmed</p>
+                    <p className="table-heading">Active</p>
+                    <p className="table-heading">Recovered</p>
+                    <p className="table-heading">Deceased</p>
+                    <p className="table-heading">Population</p>
+                  </li>
+                  <hr className="hr-line" />
+                  {showAscSort &&
+                    TabelData.map(
+                      eachTotal =>
+                        eachTotal.name !== undefined && (
+                          <StateWiseTotalRecord
+                            key={eachTotal.confirmed}
+                            stateTotal={eachTotal}
+                          />
+                        ),
+                    )}
+                  {showDescSort &&
+                    tableStateDataList.map(
+                      eachTotal =>
+                        eachTotal.name !== undefined && (
+                          <StateWiseTotalRecord
+                            key={eachTotal.confirmed}
+                            stateTotal={eachTotal}
+                          />
+                        ),
+                    )}
+                </ul>
+              </div>
             </div>
           )}
         </div>

@@ -64,12 +64,12 @@
   }
 }
 .state-wise-records {
-  border: 1px white solid;
+  /* border: 1px white solid; */
+  width: 100%;
 }
 @media screen and (max-width: 768px) {
   .state-wise-records {
     overflow-x: scroll;
-    border: 1px white;
   }
 }
 .state-wise-total-table-record {
@@ -79,10 +79,13 @@
   border: 1px solid #475569;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
   border-radius: 12px;
-  width: 100%;
-  /* padding-left: 40px;*/
   padding-right: 10px;
-  overflow-x: scroll;
+}
+@media screen and (max-width: 768px) {
+  .state-wise-total-table-record {
+    width: 839px;
+    margin-left: 24px;
+  }
 }
 
 .total-record-heading {

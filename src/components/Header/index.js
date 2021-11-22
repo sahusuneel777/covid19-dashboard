@@ -67,9 +67,11 @@ class Header extends Component {
           </div>
         )}
         <div className="nav-bar-large-container">
-          <h1 className="logo-heading">
-            COVID19<span className="india">INDIA</span>
-          </h1>
+          <Link to="/" className="nav-item-link">
+            <h1 className="logo-heading">
+              COVID19<span className="india">INDIA</span>
+            </h1>
+          </Link>
           <ul className="nav-controls">
             <Link to="/" className="nav-item-link">
               <li className="nav-item">Home</li>

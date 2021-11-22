@@ -1,36 +1,39 @@
-.country-wide {
-  list-style-type: none;
-  margin: 10px;
-  width: 160px;
-  height: 160px;
-  cursor: pointer;
-  border-radius: 5px;
+.diff-type-cards {
+  display: flex;
+  padding: 0px;
 }
 
 @media screen and (max-width: 768px) {
-  .country-wide {
-    width: 140px;
-    height: 140px;
+  .diff-type-cards {
+    display: flex;
+    flex-wrap: wrap;
   }
 }
-.diff-type-cases {
-  padding-left: 0px;
-  display: flex;
-  flex-wrap: wrap;
+
+.home-country-wide {
+  list-style-type: none;
+  margin: 10px;
+  width: 140px;
+  height: 140px;
+  border-radius: 5px;
 }
+/* @media screen and (max-width: 768px) {
+  .home-country-wide {
+    list-style-type: none;
+    margin: 10px;
+    width: 200px;
+    height: 200px;
+  }
+} */
 
 .case-count {
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
+  line-height: 24px;
 }
 
-@media screen and (max-width: 768px) {
-  .case-count {
-    margin: 2px;
-  }
-}
 .confirmed {
   color: #ff073a;
   text-align: center;

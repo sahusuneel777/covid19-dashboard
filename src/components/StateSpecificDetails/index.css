@@ -6,8 +6,14 @@
   padding-top: 0px;
   padding-bottom: 20px;
   margin: 0px;
+  width: 100%;
 }
-
+@media screen and (max-width: 768px) {
+  .state-specific-details-route {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
 .banner-card {
   display: flex;
   justify-content: space-between;
@@ -28,10 +34,19 @@
   max-width: 300px;
   flex-wrap: wrap;
 }
-
+@media screen and (max-width: 768px) {
+  .state-name-card {
+    line-height: 1.3;
+    font-weight: 400;
+    font-size: 16px;
+    max-width: 180px;
+    padding: 10px;
+  }
+}
 .cases-types {
   margin: 0px;
   padding-top: 20px;
+  padding-left: 0px;
 }
 
 .tested-count-container {
@@ -39,11 +54,22 @@
   flex-direction: column;
   align-items: flex-end;
   color: #94a3b8;
+  margin-top: 10px;
+}
+@media screen and (max-width: 768px) {
+  .tested-count-container {
+    padding: 10px;
+  }
 }
 
-.test-head {
-  margin: 0px;
-  font-size: 12px;
+.tested-head {
+  font-weight: 500;
+  font-size: 14px;
+}
+@media screen and (max-width: 768px) {
+  .tested-head {
+    margin-top: 10px;
+  }
 }
 
 .test-count {
@@ -51,19 +77,58 @@
   margin: 0px;
   font-size: 20px;
 }
+@media screen and (max-width: 768px) {
+  .test-count {
+    font-size: 14px;
+  }
+}
 
 .districts-heading {
   font-size: 30px;
   font-family: Roboto;
+  padding: 10px;
+  margin: 0px;
+  color: #94a3b8;
+  text-align: start;
 }
 
+@media screen and (max-width: 768px) {
+  .districts-heading {
+    font-size: 26px;
+  }
+}
+
+.confirmed-head {
+  color: #ff073a;
+}
+
+.active-head {
+  color: #007bff;
+}
+
+.recovered-head {
+  color: #28a745;
+}
+
+.deceased-head {
+  color: #6c757d;
+}
 .districts-data-list {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  padding-left: 0px;
 }
 
 .last-update {
   color: #94a3b8;
   font-size: 12px;
+}
+
+@media screen and (max-width: 768px) {
+  .last-update {
+    font-size: 10px;
+
+    margin: 0px;
+  }
 }

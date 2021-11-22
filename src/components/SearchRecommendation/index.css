@@ -10,7 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-width: 700px;
+  min-width: 90%;
   background: #1f1f30;
   /* border: 1px solid #94a3b8; */
   padding-left: 10px;
@@ -23,6 +23,12 @@
   line-height: 24px;
   color: #64748b;
 }
+@media screen and (max-width: 768px) {
+  .suggest-state-name {
+    font-size: 12px;
+    line-height: 20px;
+  }
+}
 
 .stateCode-item {
   display: flex;
@@ -33,6 +39,12 @@
   height: 32px;
   border-radius: 4px;
 }
+@media screen and (max-width: 768px) {
+  .stateCode-item {
+    width: 60px;
+    height: 26px;
+  }
+}
 .state-code {
   font-family: Roboto;
   font-style: normal;
@@ -41,7 +53,13 @@
   line-height: 24px;
   color: #facc15;
 }
-
+@media screen and (max-width: 768px) {
+  .state-code {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
 .right-square-icon {
   font-size: 16px;
   line-height: 24px;

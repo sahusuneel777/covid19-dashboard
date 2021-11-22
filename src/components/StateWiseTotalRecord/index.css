@@ -4,6 +4,12 @@
   align-items: center;
 }
 
+@media screen and (max-width: 768px) {
+  /* .state-total-record-card {
+    justify-content: space-around;
+  } */
+}
+
 .state-name {
   font-family: Roboto;
   font-style: normal;

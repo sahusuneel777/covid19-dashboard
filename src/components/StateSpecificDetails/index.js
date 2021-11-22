@@ -1,4 +1,6 @@
 import {Component} from 'react'
+import Loader from 'react-loader-spinner'
+
 import CaseCardItem from '../CaseCardItem'
 import DistrictItem from '../DistrictItem'
 import TimeLineData from '../TimeLineData'
@@ -151,20 +153,63 @@ const statesList = [
     state_name: 'West Bengal',
   },
 ]
-
+const apiStatusConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  inProgress: 'IN_PROGRESS',
+}
+const activeCaseConstants = {
+  confirm: 'CONFIRMED',
+  active: 'ACTIVE',
+  recovered: 'RECOVERED',
+  deceased: 'DECEASED',
+}
 class StateSpecificDetails extends Component {
   state = {
     showConfirmedCases: true,
     showActiveCases: false,
     showRecoveredCases: false,
     showDeceasedCases: false,
-    activeCaseClass: 'confirmed',
+    activeCaseClass: activeCaseConstants.confirm,
+    timeLineData: [],
+    stateWiseData: [],
+    // singleState: [],
+    apiStatus: apiStatusConstants.initial,
+  }
+
+  componentDidMount() {
+    this.getApiData()
+  }
+
+  getApiData = async () => {
+    this.setState({
+      apiStatus: apiStatusConstants.inProgress,
+    })
+    const timeLineUrl = 'https://apis.ccbp.in/covid19-timelines-data'
+    const apiUrl = 'https://apis.ccbp.in/covid19-state-wise-data'
+
+    const options = {
+      method: 'GET',
+    }
+
+    const response1 = await fetch(apiUrl, options)
+    const fetchedStateWiseData = await response1.json()
+
+    const response2 = await fetch(timeLineUrl, options)
+    const fetchedTimeLineData = await response2.json()
+
+    this.setState({
+      timeLineData: fetchedTimeLineData,
+      apiStatus: apiStatusConstants.success,
+      stateWiseData: fetchedStateWiseData,
+    })
   }
 
   convertObjectsDataIntoListItemsUsingForInMethod = () => {
     const {location} = this.props
     const {state} = location
-    const {stateWiseData} = state
+    console.log(`state`, state)
+    const {stateWiseData} = this.state
     const resultList = []
 
     // getting keys of an object object
@@ -230,31 +275,38 @@ class StateSpecificDetails extends Component {
     return resultDistrictList
   }
 
-  render() {
+  renderStateSpecificData = () => {
     const {
       showConfirmedCases,
       showActiveCases,
       showRecoveredCases,
       showDeceasedCases,
       activeCaseClass,
+      timeLineData,
+      stateWiseData,
+      // singleState,
     } = this.state
+    console.log(`timeLine`, timeLineData)
+    console.log(`statewiseData`, stateWiseData)
     const {match, location} = this.props
-    // console.log(match)
+
     const {params} = match
-    // console.log(`lo`, location)
     const stateCode = params
 
     const specificState = stateCode
 
     const specificStateCode = specificState.stateCode
-    // console.log(specificStateCode)
+    console.log(specificStateCode)
     const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
-    // console.log(TabelData)
+    console.log(`TabelData`, TabelData)
+
     const singleState = TabelData.filter(
       eachTotal => eachTotal.stateCode === specificStateCode,
     )
 
+    console.log(`singleState`, singleState)
     const [oneState] = singleState
+    console.log(oneState)
     const testedCount = oneState.tested
 
     let lastUpdatedDate = oneState.lastUpdated
@@ -265,14 +317,13 @@ class StateSpecificDetails extends Component {
     )
     const [State] = nameOfState
     const StateName = State.state_name
-    // console.log(`s1`, State.state_name)
 
     const [singleSpecificState] = singleState
-    // console.log(`s2`, singleSpecificState)
+    console.log(`s2`, singleSpecificState)
     const {districts} = singleSpecificState
 
     const districtDataList = this.convertDistrictObjectIntoList(districts)
-    // console.log(districtDataList)
+    console.log(districtDataList)
 
     const sortByCaseKey = (array, key) =>
       array.sort((a, b) => {
@@ -282,7 +333,7 @@ class StateSpecificDetails extends Component {
       })
 
     const sortedArray = sortByCaseKey(districtDataList, activeCaseClass)
-    console.log(`sorted_case_array`, sortedArray)
+    // console.log(`sorted_case_array`, sortedArray)
 
     const showConfirmed = () => {
       this.setState({
@@ -290,7 +341,7 @@ class StateSpecificDetails extends Component {
         showActiveCases: false,
         showDeceasedCases: false,
         showRecoveredCases: false,
-        activeCaseClass: 'confirmed',
+        activeCaseClass: activeCaseConstants.confirm,
       })
     }
 
@@ -300,7 +351,7 @@ class StateSpecificDetails extends Component {
         showActiveCases: true,
         showDeceasedCases: false,
         showRecoveredCases: false,
-        activeCaseClass: 'active',
+        activeCaseClass: activeCaseConstants.active,
       })
     }
 
@@ -310,7 +361,7 @@ class StateSpecificDetails extends Component {
         showActiveCases: false,
         showDeceasedCases: true,
         showRecoveredCases: false,
-        activeCaseClass: 'deceased',
+        activeCaseClass: activeCaseConstants.deceased,
       })
     }
 
@@ -320,9 +371,26 @@ class StateSpecificDetails extends Component {
         showActiveCases: false,
         showDeceasedCases: false,
         showRecoveredCases: true,
-        activeCaseClass: 'recovered',
+        activeCaseClass: activeCaseConstants.recovered,
       })
     }
+
+    const districtHeadingActiveClass = () => {
+      switch (activeCaseClass) {
+        case activeCaseConstants.confirm:
+          return 'confirmed-head'
+        case activeCaseConstants.recovered:
+          return ' recovered-head'
+        case activeCaseConstants.active:
+          return 'active-head'
+        case activeCaseConstants.deceased:
+          return 'deceased-head'
+        default:
+          return null
+      }
+    }
+
+    const districtHeadingActive = districtHeadingActiveClass()
 
     return (
       <div className="state-specific-details-route">
@@ -354,7 +422,9 @@ class StateSpecificDetails extends Component {
           ))}
         </ul>
 
-        <h1 className="districts-heading">Top Districts</h1>
+        <h1 className={`districts-heading ${districtHeadingActive}`}>
+          Top Districts
+        </h1>
 
         <ul className="districts-data-list">
           {districtDataList.map(eachState => (
@@ -368,10 +438,34 @@ class StateSpecificDetails extends Component {
             />
           ))}
         </ul>
-        <TimeLineData />
+
+        <TimeLineData timeLineData={timeLineData} />
         <Footer />
       </div>
     )
   }
+
+  renderLoadingView = () => (
+    <div className="covid-loader-container">
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
+  render() {
+    const renderStateSpecificRoute = () => {
+      const {apiStatus} = this.state
+
+      switch (apiStatus) {
+        case apiStatusConstants.success:
+          return this.renderStateSpecificData()
+        case apiStatusConstants.inProgress:
+          return this.renderLoadingView()
+        default:
+          return null
+      }
+    }
+    return <div>{renderStateSpecificRoute()}</div>
+  }
 }
+
 export default StateSpecificDetails

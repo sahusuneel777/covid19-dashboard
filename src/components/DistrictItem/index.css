@@ -1,8 +1,14 @@
 .district-records {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   list-style-type: none;
   width: 200px;
+}
+
+@media screen and (max-width: 768px) {
+  .district-records {
+    width: 150px;
+  }
 }
 
 .district-name {

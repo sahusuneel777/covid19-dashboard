@@ -6,6 +6,7 @@
   background-color: #161625;
   min-height: 100vh;
   padding: 20px;
+  width: 100%;
 }
 
 .search-container {
@@ -14,16 +15,18 @@
   height: 50px;
   display: flex;
   align-items: center;
-  min-width: 700px;
+  /* max-width: 70%; */
+  width: 700px;
   align-self: center;
   margin-top: 60px;
 }
+
 @media screen and (max-width: 768px) {
   .search-container {
-    min-width: 70%;
+    height: 40px;
+    max-width: 70%;
   }
 }
-
 .search-input {
   font-size: 16px;
   line-height: 24px;
@@ -34,6 +37,13 @@
   width: 90%;
 }
 
+@media screen and (max-width: 768px) {
+  .search-input {
+    line-height: 18px;
+    font-size: 14px;
+  }
+}
+
 .search-icon {
   color: #94a3b8;
   height: 16px;
@@ -41,6 +51,27 @@
   margin-right: 8px;
 }
 
+.search-recommendation-list {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  margin: 0px;
+  padding: 0px;
+}
+@media screen and (max-width: 768px) {
+  .search-recommendation-list {
+    max-width: 70%;
+  }
+}
+.state-wise-records {
+  border: 1px white solid;
+}
+@media screen and (max-width: 768px) {
+  .state-wise-records {
+    overflow-x: scroll;
+    border: 1px white;
+  }
+}
 .state-wise-total-table-record {
   display: flex;
   flex-direction: column;
@@ -48,14 +79,16 @@
   border: 1px solid #475569;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
   border-radius: 12px;
-  width: 80%;
-  padding-left: 40px;
-  padding-right: 40px;
+  width: 100%;
+  /* padding-left: 40px;*/
+  padding-right: 10px;
+  overflow-x: scroll;
 }
 
 .total-record-heading {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .table-heading {
@@ -80,6 +113,7 @@
   background-color: transparent;
   border: none;
   outline: none;
+  padding: 1px;
 }
 
 .hr-line {
@@ -87,29 +121,26 @@
   width: 100%;
 }
 
-.diff-type-cards {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media screen and(min-width:768px) {
-  .diff-type-cards {
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-.search-recommendation-list {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-}
-
 .stats-section {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.diff-type-total-case-cards {
+  width: 100%;
+  display: flex;
+}
+
+@media screen and (max-width: 768px) {
+  .diff-type-total-case-cards {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.states-records-container {
+  width: 100%;
 }
 
 .covid-loader-container {

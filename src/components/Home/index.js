@@ -4,9 +4,8 @@ import {BsSearch} from 'react-icons/bs'
 import {FcGenericSortingAsc, FcGenericSortingDesc} from 'react-icons/fc'
 import Loader from 'react-loader-spinner'
 import StateWiseTotalRecord from '../StateWiseTotalRecord'
-import CaseCardItem from '../CaseCardItem'
+import HomeCaseCardItem from '../HomeCaseCardItem'
 import SearchRecommendation from '../SearchRecommendation'
-import StateSpecificDetails from '../StateSpecificDetails'
 import Footer from '../Footer'
 
 import './index.css'
@@ -163,15 +162,18 @@ const apiStatusConstants = {
   success: 'SUCCESS',
   inProgress: 'IN_PROGRESS',
 }
+let TabelData = []
 
 class Home extends Component {
   state = {
     stateWiseData: {},
-    timeLineData: {},
     showStateStats: true,
     showSearchSuggestions: false,
     searchInput: '',
     apiStatus: apiStatusConstants.initial,
+    tableStateDataList: TabelData,
+    showAscSort: true,
+    showDescSort: false,
   }
 
   componentDidMount() {
@@ -183,7 +185,6 @@ class Home extends Component {
       apiStatus: apiStatusConstants.inProgress,
     })
     const apiUrl = 'https://apis.ccbp.in/covid19-state-wise-data'
-    const timeLineUrl = 'https://apis.ccbp.in/covid19-timelines-data'
     const options = {
       method: 'GET',
     }
@@ -191,10 +192,7 @@ class Home extends Component {
     const response1 = await fetch(apiUrl, options)
     const fetchedData1 = await response1.json()
 
-    const response2 = await fetch(timeLineUrl, options)
-    const fetchedData2 = await response2.json()
     this.setState({
-      timeLineData: fetchedData2,
       stateWiseData: fetchedData1,
       apiStatus: apiStatusConstants.success,
     })
@@ -206,14 +204,6 @@ class Home extends Component {
       searchInput: event.target.value,
       showStateStats: false,
     })
-  }
-
-  gotoStateSpecificRoute = () => {
-    const {stateWiseData} = this.state
-    if (stateWiseData) {
-      return <StateSpecificDetails />
-    }
-    return 0
   }
 
   convertObjectsDataIntoListItemsUsingForInMethod = () => {
@@ -248,7 +238,43 @@ class Home extends Component {
         })
       }
     })
+    // statesResultList = resultList
     return resultList
+  }
+
+  sortByCaseKeyDesc = (array, key) =>
+    array.sort((a, b) => {
+      const x = a[key]
+      const y = b[key]
+      return x > y ? -1 : 1
+    })
+
+  sortByCaseKeyAsc = (array, key) =>
+    array.sort((a, b) => {
+      const x = a[key]
+      const y = b[key]
+      return x > y ? 1 : -1
+    })
+
+  sortAscending = () => {
+    const sortedStateArray = this.sortByCaseKeyAsc(TabelData, 'stateCode')
+    console.log(sortedStateArray)
+    this.setState({
+      tableStateDataList: sortedStateArray,
+      showDescSort: false,
+      showAscSort: true,
+    })
+  }
+
+  sortDescending = () => {
+    const sortedStateArrayrev = this.sortByCaseKeyDesc(TabelData, 'stateCode')
+    this.setState({
+      tableStateDataList: sortedStateArrayrev,
+      showAscSort: false,
+      showDescSort: true,
+    })
+
+    console.log(sortedStateArrayrev)
   }
 
   renderCovidCasesData = () => {
@@ -258,36 +284,16 @@ class Home extends Component {
       searchInput,
       showSearchSuggestions,
       showStateStats,
+      tableStateDataList,
+      showAscSort,
+      showDescSort,
     } = this.state
 
-    // console.log(timeLineData)
+    console.log(`stateWiseData`, stateWiseData)
 
-    const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
+    TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
     console.log(`tableData`, TabelData)
-
-    const sortByCaseKeyDesc = (array, key) =>
-      array.sort((a, b) => {
-        const x = a[key]
-        const y = b[key]
-        return x > y ? -1 : 1
-      })
-
-    const sortByCaseKeyAsc = (array, key) =>
-      array.sort((a, b) => {
-        const x = a[key]
-        const y = b[key]
-        return x > y ? 1 : -1
-      })
-
-    const sortAscending = () => {
-      const sortedStateArray = sortByCaseKeyAsc(TabelData, 'stateCode')
-      console.log(sortedStateArray)
-    }
-
-    const sortDescending = () => {
-      const sortedStateArrayrev = sortByCaseKeyDesc(TabelData, 'stateCode')
-      console.log(sortedStateArrayrev)
-    }
+    console.log(`tableStateDataList`, tableStateDataList)
 
     let filteredStatesList = []
     filteredStatesList = statesList.filter(eachState =>
@@ -328,63 +334,76 @@ class Home extends Component {
           </ul>
         )}
 
-        {showStateStats && (
-          <div className="stats-section">
-            <div className="diff-type-cards">
-              {TabelData.map(
-                eachTotal =>
-                  eachTotal.name === undefined && (
-                    <CaseCardItem
-                      key={eachTotal.confirmed}
-                      stateTotal={eachTotal}
-                    />
-                  ),
-              )}
+        <div className="states-records-container">
+          {showStateStats && (
+            <div className="stats-section">
+              <div className="diff-type-total-case-cards">
+                {TabelData.map(
+                  eachTotal =>
+                    eachTotal.name === undefined && (
+                      <HomeCaseCardItem
+                        key={eachTotal.confirmed}
+                        stateTotal={eachTotal}
+                      />
+                    ),
+                )}
+              </div>
+              {/* <div className="state-wise-records"> */}
+              <ul
+                className="state-wise-total-table-record"
+                testid="stateWiseCovidDataTable"
+              >
+                <li className="total-record-heading">
+                  <div className="sorting-item">
+                    <p className="table-heading">States/UT</p>
+                    <button
+                      type="button"
+                      className="sort-icon"
+                      testid="ascendingSort"
+                      onClick={this.sortAscending}
+                    >
+                      <FcGenericSortingAsc />
+                    </button>
+                    <button
+                      type="button"
+                      className="sort-icon"
+                      testid="descendingSort"
+                      onClick={this.sortDescending}
+                    >
+                      <FcGenericSortingDesc />
+                    </button>
+                  </div>
+                  <p className="table-heading">Confirmed</p>
+                  <p className="table-heading">Active</p>
+                  <p className="table-heading">Recovered</p>
+                  <p className="table-heading">Deceased</p>
+                  <p className="table-heading">Population</p>
+                </li>
+                <hr className="hr-line" />
+                {showAscSort &&
+                  TabelData.map(
+                    eachTotal =>
+                      eachTotal.name !== undefined && (
+                        <StateWiseTotalRecord
+                          key={eachTotal.confirmed}
+                          stateTotal={eachTotal}
+                        />
+                      ),
+                  )}
+                {showDescSort &&
+                  tableStateDataList.map(
+                    eachTotal =>
+                      eachTotal.name !== undefined && (
+                        <StateWiseTotalRecord
+                          key={eachTotal.confirmed}
+                          stateTotal={eachTotal}
+                        />
+                      ),
+                  )}
+              </ul>
             </div>
-
-            <ul
-              className="state-wise-total-table-record"
-              testid="stateWiseCovidDataTable"
-            >
-              <li className="total-record-heading">
-                <div className="sorting-item">
-                  <p className="table-heading">States/UT</p>
-                  <button
-                    type="button"
-                    className="sort-icon"
-                    testid="ascendingSort"
-                    onClick={sortAscending}
-                  >
-                    <FcGenericSortingAsc />
-                  </button>
-                  <button
-                    type="button"
-                    className="sort-icon"
-                    testid="descendingSort"
-                    onClick={sortDescending}
-                  >
-                    <FcGenericSortingDesc />
-                  </button>
-                </div>
-                <p className="table-heading">Confirmed</p>
-                <p className="table-heading">Active</p>
-                <p className="table-heading">Recovered</p>
-                <p className="table-heading">Deceased</p>
-                <p className="table-heading">Population</p>
-              </li>
-              <hr className="hr-line" />
-              {TabelData.map(
-                eachTotal =>
-                  eachTotal.name !== undefined && (
-                    <StateWiseTotalRecord
-                      key={eachTotal.confirmed}
-                      stateTotal={eachTotal}
-                    />
-                  ),
-              )}
-            </ul>
-          </div>
-        )}
+          )}
+        </div>
         <Footer />
       </div>
     )

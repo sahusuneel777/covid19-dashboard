@@ -7,10 +7,30 @@
   font-weight: 300;
   /* background-color: rgb(53, 61, 68); */
   border-radius: 5px;
+  margin: 10px;
 }
 
-.bar:hover {
-  color: none;
+/* .bar:hover {
+  fill: none;
+} */
+.heading-container {
+  text-align: start;
+}
+@media screen and (max-width: 768px) {
+  .heading-container {
+    text-align: center;
+  }
+}
+
+.trends-heading {
+  color: #94a3b8;
+  font-size: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .trends-heading {
+    font-size: 20px;
+  }
 }
 
 .bar-confirmed-chart {
@@ -62,4 +82,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+}
+
+.graph-container {
+  width: 100%;
 }

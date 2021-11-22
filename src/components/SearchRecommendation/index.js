@@ -3,22 +3,13 @@ import {Link} from 'react-router-dom'
 import './index.css'
 
 const SearchRecommendation = props => {
-  const {state, allStates, timeLineData, gotoStateSpecificRoute} = props
+  const {state} = props
   const {stateCode, stateName} = state
 
-  const onClickSearchItem = () => {
-    gotoStateSpecificRoute(stateCode)
-  }
   return (
-    <Link
-      className="recommendation-link-item"
-      to={{
-        pathname: `/state/${stateCode}`,
-        state: {stateWiseData: allStates, timeLineData},
-      }}
-      // to={`/state/${stateCode}`} state: {{states}}
-    >
-      <li className="recommendation-card" onClick={onClickSearchItem}>
+    <Link className="recommendation-link-item" to={`/state/${stateCode}`}>
+      {/* <li className="recommendation-card" onClick={onClickSearchItem}> */}
+      <li className="recommendation-card">
         <p className="suggest-state-name">{stateName}</p>
         <div className="stateCode-item">
           <p className="state-code">{stateCode}</p>
@@ -29,3 +20,8 @@ const SearchRecommendation = props => {
   )
 }
 export default SearchRecommendation
+
+//   to={{
+//     pathname: `/state/${stateCode}`,
+//     state: {stateWiseData: allStates, timeLineData},
+//   }}

@@ -1,40 +1,31 @@
-import {Component, React} from 'react'
+import {Component} from 'react'
 import {withRouter} from 'react-router-dom'
 
 import {
   LineChart,
   XAxis,
   YAxis,
-  CartesianGrid,
+  // CartesianGrid,
   Tooltip,
   Legend,
   Line,
   BarChart,
   Bar,
+  ResponsiveContainer,
 } from 'recharts'
-import './index.css'
 
-const apiStatusConstants = {
-  initial: 'INITIAL',
-  success: 'SUCCESS',
-  failure: 'FAILURE',
-  inProgress: 'IN_PROGRESS',
-}
+import './index.css'
 
 // const format = require('date-fns/format')
 
 class TimeLineData extends Component {
   state = {
-    activeDailyOption: false,
-    activeCumulativeOption: false,
+    activeTrend: `cumulative`,
   }
 
   convertObjectsDataIntoListItemsUsingForInMethod = () => {
     const singleTimeLineResultList = []
-    const {location} = this.props
-    const {state} = location
-    const {timeLineData} = state
-    const {match} = this.props
+    const {timeLineData, match} = this.props
     const {params} = match
     const {stateCode} = params
 
@@ -111,15 +102,20 @@ class TimeLineData extends Component {
   }
 
   renderBarChart = lastTenDaysCases => (
-    <div>
+    <div className="graph-container">
       <h1>Bar Chart</h1>
-      <div>
+
+      <ResponsiveContainer
+        width="85%"
+        height={400}
+        // margin={{top: 0, left: 0, right: 0, bottom: 20}}
+      >
         <BarChart
           width={500}
           height={350}
           stroke="#9A0E31"
           data={lastTenDaysCases}
-          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+          // margin={{top: 5, right: 30, left: 20, bottom: 15}}
           className="bar-confirmed-chart"
         >
           {/* <CartesianGrid strokeDasharray="" /> */}
@@ -138,7 +134,9 @@ class TimeLineData extends Component {
             label={{position: 'top', color: 'white'}}
           />
         </BarChart>
+      </ResponsiveContainer>
 
+      <ResponsiveContainer width="85%" height={400}>
         <BarChart
           width={500}
           height={350}
@@ -158,11 +156,12 @@ class TimeLineData extends Component {
           <Bar
             dataKey="active"
             fill="#0A4FA0"
-            className="bar"
+            className="bar-active-chart"
             label={{position: 'top', color: 'white'}}
           />
         </BarChart>
-
+      </ResponsiveContainer>
+      <ResponsiveContainer width="85%" height={400}>
         <BarChart
           width={500}
           height={350}
@@ -187,7 +186,8 @@ class TimeLineData extends Component {
             label={{position: 'top', color: 'white'}}
           />
         </BarChart>
-
+      </ResponsiveContainer>
+      <ResponsiveContainer width="85%" height={400}>
         <BarChart
           width={800}
           height={350}
@@ -211,101 +211,134 @@ class TimeLineData extends Component {
             label={{position: 'top', color: 'white'}}
           />
         </BarChart>
-      </div>
+      </ResponsiveContainer>
     </div>
   )
 
   renderLineChart = lastTenDaysCases => (
-    <div className="App">
-      <LineChart
-        width={730}
-        height={250}
-        data={lastTenDaysCases}
-        className="bar-confirmed-chart"
-        margin={{top: 5, right: 30, left: 20, bottom: 5}}
-      >
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
-        <XAxis dataKey="date" stroke="#FF073A" axisLine={{stroke: '#FF073A'}} />
-        <YAxis axisLine={{stroke: '#FF073A'}} />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="confirmed" stroke="#FF073A" />
-      </LineChart>
-
-      <LineChart
-        width={730}
-        height={250}
-        data={lastTenDaysCases}
-        margin={{top: 5, right: 30, left: 20, bottom: 5}}
-        className="bar-active-chart"
-      >
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
-        <XAxis dataKey="date" stroke="#007BFF" axisLine={{stroke: '#007BFF'}} />
-        <YAxis axisLine={{stroke: '#007BFF'}} />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="active" stroke="#007BFF" />
-      </LineChart>
-
-      <LineChart
-        width={730}
-        height={250}
-        data={lastTenDaysCases}
-        margin={{top: 5, right: 30, left: 20, bottom: 5}}
-        className="bar-recovered-chart"
-      >
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
-        <XAxis dataKey="date" stroke="#27A243" axisLine={{stroke: '#27A243'}} />
-        <YAxis axisLine={{stroke: '#27A243'}} />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="recovered" stroke="#27A243" />
-      </LineChart>
-
-      <LineChart
-        width={730}
-        height={250}
-        data={lastTenDaysCases}
-        margin={{top: 5, right: 30, left: 20, bottom: 5}}
-        className="bar-tested-chart"
-      >
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
-        <XAxis dataKey="date" stroke="#9673B9" axisLine={{stroke: '#9673B9'}} />
-        <YAxis axisLine={{stroke: '#9673B9'}} />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="tested" stroke="#9673B9" />
-      </LineChart>
-
-      <LineChart
-        width={730}
-        height={250}
-        data={lastTenDaysCases}
-        margin={{top: 5, right: 30, left: 20, bottom: 5}}
-        className="bar-deceased-chart"
-      >
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
-        <XAxis dataKey="date" stroke="#6C757D" axisLine={{stroke: '#6C757D'}} />
-        <YAxis axisLine={{stroke: '#6C757D'}} />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="deceased" stroke="#6C757D" />
-      </LineChart>
-
-      <LineChart
-        width={730}
-        height={250}
-        data={lastTenDaysCases}
-        margin={{top: 5, right: 30, left: 20, bottom: 5}}
-        className="bar-vaccinated-chart"
-      >
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
-        <XAxis dataKey="date" stroke="#F95581" axisLine={{stroke: '#F95581'}} />
-        <YAxis axisLine={{stroke: '#F95581'}} />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="vaccinated" stroke="#F95581" />
-      </LineChart>
+    <div className="graph-container">
+      <ResponsiveContainer width="85%" height={400}>
+        <LineChart
+          width={730}
+          height={250}
+          data={lastTenDaysCases}
+          className="bar-confirmed-chart"
+          Legend="confirmed"
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+        >
+          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          <XAxis
+            dataKey="date"
+            label={{fill: 'red', fontSize: 10}}
+            stroke="#FF073A"
+            axisLine={{stroke: '#FF073A'}}
+          />
+          <YAxis axisLine={{stroke: '#FF073A'}} />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="confirmed" stroke="#FF073A" />
+        </LineChart>
+      </ResponsiveContainer>
+      <ResponsiveContainer width="85%" height={400}>
+        <LineChart
+          width={730}
+          height={250}
+          data={lastTenDaysCases}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+          className="bar-active-chart"
+        >
+          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          <XAxis
+            dataKey="date"
+            stroke="#007BFF"
+            axisLine={{stroke: '#007BFF'}}
+          />
+          <YAxis axisLine={{stroke: '#007BFF'}} />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="active" stroke="#007BFF" />
+        </LineChart>
+      </ResponsiveContainer>
+      <ResponsiveContainer width="85%" height={400}>
+        <LineChart
+          width={730}
+          height={250}
+          data={lastTenDaysCases}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+          className="bar-recovered-chart"
+        >
+          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          <XAxis
+            dataKey="date"
+            stroke="#27A243"
+            axisLine={{stroke: '#27A243'}}
+          />
+          <YAxis axisLine={{stroke: '#27A243'}} />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="recovered" stroke="#27A243" />
+        </LineChart>
+      </ResponsiveContainer>
+      <ResponsiveContainer width="85%" height={400}>
+        <LineChart
+          width={730}
+          height={250}
+          data={lastTenDaysCases}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+          className="bar-tested-chart"
+        >
+          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          <XAxis
+            dataKey="date"
+            stroke="#9673B9"
+            axisLine={{stroke: '#9673B9'}}
+          />
+          <YAxis axisLine={{stroke: '#9673B9'}} />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="tested" stroke="#9673B9" />
+        </LineChart>
+      </ResponsiveContainer>
+      <ResponsiveContainer width="85%" height={400}>
+        <LineChart
+          width={730}
+          height={250}
+          data={lastTenDaysCases}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+          className="bar-deceased-chart"
+        >
+          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          <XAxis
+            dataKey="date"
+            stroke="#6C757D"
+            axisLine={{stroke: '#6C757D'}}
+          />
+          <YAxis axisLine={{stroke: '#6C757D'}} />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="deceased" stroke="#6C757D" />
+        </LineChart>
+      </ResponsiveContainer>
+      <ResponsiveContainer width="85%" height={400}>
+        <LineChart
+          width={730}
+          height={250}
+          data={lastTenDaysCases}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+          className="bar-vaccinated-chart"
+        >
+          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          <XAxis
+            dataKey="date"
+            stroke="#F95581"
+            axisLine={{stroke: '#F95581'}}
+          />
+          <YAxis axisLine={{stroke: '#F95581'}} />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="vaccinated" stroke="#F95581" />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   )
 
@@ -319,7 +352,21 @@ class TimeLineData extends Component {
 
   render() {
     const {activeOption} = this.state
-    const activeClass = activeOption ? 'active-class' : ''
+
+    // const districtHeadingActiveClass = () => {
+    //   switch (activeTrend) {
+    //     case activeTrendConstants.cumulative:
+    //       return 'confirmed-head'
+    //     case activeTrendConstants.daily:
+    //       return ' recovered-head'
+    //     default:
+    //       return null
+    //   }
+    // }
+
+    // const districtHeadingActive = districtHeadingActiveClass()
+
+    const activeTrend = activeOption ? 'active-class' : ''
     // const activeOption = activeDailyOption ? 'active-class' : ''
 
     const singleTimeLineDataList = this.convertObjectsDataIntoListItemsUsingForInMethod()
@@ -334,21 +381,24 @@ class TimeLineData extends Component {
 
     return (
       <div>
-        <div>
-          <button
-            type="button"
-            onClick={this.onClickCumulative}
-            className={`action-button ${activeClass}`}
-          >
-            Cumulative
-          </button>
-          <button
-            type="button"
-            onClick={this.onClickDaily}
-            className={`action-button ${activeClass}`}
-          >
-            Daily
-          </button>
+        <div className="heading-container">
+          <h1 className="trends-heading">Spread Trends</h1>
+          <div>
+            <button
+              type="button"
+              onClick={this.onClickCumulative}
+              className={`action-button ${activeTrend}`}
+            >
+              Cumulative
+            </button>
+            <button
+              type="button"
+              onClick={this.onClickDaily}
+              className={`action-button ${activeTrend}`}
+            >
+              Daily
+            </button>
+          </div>
         </div>
         <div className="chart-container">
           {activeOption

@@ -115,7 +115,6 @@
 }
 .districts-data-list {
   display: flex;
-  justify-content: space-around;
   flex-wrap: wrap;
   padding-left: 0px;
 }

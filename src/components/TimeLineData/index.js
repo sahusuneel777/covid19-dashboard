@@ -346,29 +346,46 @@ class TimeLineData extends Component {
     this.setState({activeOption: false})
   }
 
-  //   getLastDateOfMonth = allDates => {
-  //     const lastDates = []
-  //     const keyNames = Object.keys(allDates)
-  //     console.log(keyNames)
-  //     keyNames.forEach(eachKey => {
-  //       const dateString = eachKey
-  //       const date = Date.parse(dateString)
-  //       const dateStamp = new Date(date)
-  //       const lastDateOfMonth = new Date(
-  //         dateStamp.getFullYear(),
-  //         dateStamp.getMonth() + 1,
-  //         0,
-  //       )
+  getLastDateOfMonth = allDates => {
+    const lastDates = []
+    const keyNames = Object.keys(allDates)
+    console.log(keyNames)
+    keyNames.forEach(eachKey => {
+      const dateString = eachKey
+      const date = Date.parse(dateString)
+      const dateStamp = new Date(date)
+      const lastDateOfMonth = new Date(
+        dateStamp.getFullYear(),
+        dateStamp.getMonth() + 1,
+        0,
+      )
 
-  //       // const string = toString(lastDateOfMonth)
-  //       console.log(lastDateOfMonth)
+      console.log(lastDateOfMonth)
 
-  //       if (!lastDates.includes(`${lastDateOfMonth}`)) {
-  //         lastDates.push(lastDateOfMonth)
-  //         // console.log(lastDates)
-  //       }
-  //     })
-  //     return lastDates
+      if (!lastDates.includes(`${lastDateOfMonth}`)) {
+        lastDates.push(lastDateOfMonth)
+        // console.log(lastDates)
+      }
+    })
+  }
+
+  // program to remove duplicate value from an array
+
+  //     const getUnique = arr => {
+  //       const uniqueArr = []
+  //       arr.map(eachEle => {
+  //         if (uniqueArr.indexOf(eachEle) === -1) {
+  //           uniqueArr.push(eachEle)
+  //         }
+  //         return null
+  //       })
+  //       return uniqueArr
+  //     }
+
+  //     // calling the function
+  //     // passing array argument
+  //     const uniques = getUnique(lastDates)
+  //     console.log(`uniques`, uniques)
   //   }
 
   render() {
@@ -400,8 +417,8 @@ class TimeLineData extends Component {
     const lastTenDaysCases = this.convertLastAllDatesObjectIntoAList(allDates)
     // console.log(lastTenDaysCases)
 
-    // const lastDateOfMonths = this.getLastDateOfMonth(allDates)
-    // console.log(lastDateOfMonths)
+    const lastDateOfMonths = this.getLastDateOfMonth(allDates)
+    console.log(lastDateOfMonths)
     return (
       <div>
         <div className="heading-container">

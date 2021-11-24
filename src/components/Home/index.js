@@ -325,7 +325,10 @@ class Home extends Component {
           />
         </div>
         {showSearchSuggestions && (
-          <ul className="search-recommendation-list">
+          <ul
+            testid="searchResultsUnorderedList"
+            className="search-recommendation-list"
+          >
             {updatedFilteredStates.map(eachState => (
               <SearchRecommendation
                 key={eachState.stateCode}

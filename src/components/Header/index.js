@@ -5,6 +5,8 @@ import './index.css'
 class Header extends Component {
   state = {
     displaySmNavItems: false,
+    activeHomeNav: true,
+    activeAboutNav: false,
   }
 
   onClickNavBarIcon = () => {
@@ -19,8 +21,18 @@ class Header extends Component {
     }))
   }
 
+  activeHomeNav = () => {
+    this.setState({activeHomeNav: true, activeAboutNav: false})
+  }
+
+  activeAboutNav = () => {
+    this.setState({activeHomeNav: false, activeAboutNav: true})
+  }
+
   render() {
-    const {displaySmNavItems} = this.state
+    const {displaySmNavItems, activeHomeNav, activeAboutNav} = this.state
+    const activeHomeClass = activeHomeNav === true ? 'active-tab-class' : ''
+    const activeAboutClass = activeAboutNav === true ? 'active-tab-class' : ''
 
     return (
       <div className="header-container">
@@ -46,10 +58,20 @@ class Header extends Component {
           <div className="nav-sm-controls">
             <ul className="sm-controls">
               <Link to="/" className="nav-item-link">
-                <li className="nav-item">Home</li>
+                <li
+                  className={`nav-item-home ${activeHomeClass}`}
+                  onClick={this.activeHomeNav}
+                >
+                  Home
+                </li>
               </Link>
               <Link to="/about" className="nav-item-link">
-                <li className="nav-item">About</li>
+                <li
+                  onClick={this.activeAboutNav}
+                  className={`nav-item ${activeAboutClass}`}
+                >
+                  About
+                </li>
               </Link>
             </ul>
             <button
@@ -74,11 +96,21 @@ class Header extends Component {
           </Link>
           <ul className="nav-controls">
             <Link to="/" className="nav-item-link">
-              <li className="nav-item">Home</li>
+              <li
+                className={`nav-item ${activeHomeClass}`}
+                onClick={this.activeHomeNav}
+              >
+                Home
+              </li>
             </Link>
 
             <Link to="/about" className="nav-item-link">
-              <li className="nav-item">About</li>
+              <li
+                className={`nav-item ${activeAboutClass}`}
+                onClick={this.activeAboutNav}
+              >
+                About
+              </li>
             </Link>
           </ul>
         </div>

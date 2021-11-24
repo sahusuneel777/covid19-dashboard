@@ -50,10 +50,10 @@ class TimeLineData extends Component {
   }
 
   convertLastAllDatesObjectIntoAList = allDates => {
-    const lastTenDatesRecovered = []
+    const lastTenDates = []
     const keyNames = Object.keys(allDates)
     const reversedKeyNames = keyNames.reverse()
-
+    // console.log(`reversedKeyNames`, reversedKeyNames)
     reversedKeyNames.forEach(eachKey => {
       if (eachKey !== undefined) {
         const {delta} = allDates[eachKey]
@@ -93,23 +93,19 @@ class TimeLineData extends Component {
         dateObject.active = activeCases
         dateObject.tested = tested
         dateObject.vaccinated = vaccinated
-        if (lastTenDatesRecovered.length < 10) {
-          lastTenDatesRecovered.push(dateObject)
+        if (lastTenDates.length < 10) {
+          lastTenDates.push(dateObject)
         }
       }
     })
-    return lastTenDatesRecovered.reverse()
+    return lastTenDates.reverse()
   }
 
   renderBarChart = lastTenDaysCases => (
     <div className="graph-container">
-      <h1>Bar Chart</h1>
+      <h1 className="bar-graph-heading">Bar Chart</h1>
 
-      <ResponsiveContainer
-        width="85%"
-        height={400}
-        // margin={{top: 0, left: 0, right: 0, bottom: 20}}
-      >
+      <ResponsiveContainer width="85%" height={400} margin={10}>
         <BarChart
           width={500}
           height={350}
@@ -136,7 +132,7 @@ class TimeLineData extends Component {
         </BarChart>
       </ResponsiveContainer>
 
-      <ResponsiveContainer width="85%" height={400}>
+      <ResponsiveContainer width="85%" height={400} margin={10}>
         <BarChart
           width={500}
           height={350}
@@ -216,7 +212,7 @@ class TimeLineData extends Component {
   )
 
   renderLineChart = lastTenDaysCases => (
-    <div className="graph-container">
+    <div className="graph-container" testid="lineChartsContainer">
       <ResponsiveContainer width="85%" height={400}>
         <LineChart
           width={730}
@@ -350,6 +346,31 @@ class TimeLineData extends Component {
     this.setState({activeOption: false})
   }
 
+  //   getLastDateOfMonth = allDates => {
+  //     const lastDates = []
+  //     const keyNames = Object.keys(allDates)
+  //     console.log(keyNames)
+  //     keyNames.forEach(eachKey => {
+  //       const dateString = eachKey
+  //       const date = Date.parse(dateString)
+  //       const dateStamp = new Date(date)
+  //       const lastDateOfMonth = new Date(
+  //         dateStamp.getFullYear(),
+  //         dateStamp.getMonth() + 1,
+  //         0,
+  //       )
+
+  //       // const string = toString(lastDateOfMonth)
+  //       console.log(lastDateOfMonth)
+
+  //       if (!lastDates.includes(`${lastDateOfMonth}`)) {
+  //         lastDates.push(lastDateOfMonth)
+  //         // console.log(lastDates)
+  //       }
+  //     })
+  //     return lastDates
+  //   }
+
   render() {
     const {activeOption} = this.state
 
@@ -374,11 +395,13 @@ class TimeLineData extends Component {
     const [dates] = singleTimeLineDataList
 
     const allDates = this.getAllDates(dates)
-    // console.log(allDates)
+    console.log(`allDates`, allDates)
 
     const lastTenDaysCases = this.convertLastAllDatesObjectIntoAList(allDates)
     // console.log(lastTenDaysCases)
 
+    // const lastDateOfMonths = this.getLastDateOfMonth(allDates)
+    // console.log(lastDateOfMonths)
     return (
       <div>
         <div className="heading-container">

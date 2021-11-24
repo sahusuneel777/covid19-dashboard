@@ -159,10 +159,10 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 const activeCaseConstants = {
-  confirm: 'CONFIRMED',
-  active: 'ACTIVE',
-  recovered: 'RECOVERED',
-  deceased: 'DECEASED',
+  confirm: 'confirmed',
+  active: 'active',
+  recovered: 'recovered',
+  deceased: 'deceased',
 }
 class StateSpecificDetails extends Component {
   state = {
@@ -249,7 +249,7 @@ class StateSpecificDetails extends Component {
   }
 
   convertDistrictObjectIntoList = districts => {
-    console.log('convert district called')
+    // console.log('convert district called')
     const resultDistrictList = []
     const districtKeyName = Object.keys(districts)
     districtKeyName.forEach(keyName => {
@@ -333,7 +333,7 @@ class StateSpecificDetails extends Component {
       })
 
     const sortedArray = sortByCaseKey(districtDataList, activeCaseClass)
-    // console.log(`sorted_case_array`, sortedArray)
+    console.log(`sorted_case_array`, sortedArray)
 
     const showConfirmed = () => {
       this.setState({
@@ -396,8 +396,8 @@ class StateSpecificDetails extends Component {
       <div className="state-specific-details-route">
         <div className="banner-card">
           <div className="state-details-container">
-            <div className="state-name-card">{StateName}</div>
-            <p className="last-update">{`Last Updated on ${lastUpdatedDate}`}</p>
+            <h1 className="state-name-card">{StateName}</h1>
+            <h1 className="last-update">{`Last Updated on ${lastUpdatedDate}`}</h1>
           </div>
           <div className="tested-count-container">
             <p className="tested-head">Tested</p>
@@ -426,7 +426,7 @@ class StateSpecificDetails extends Component {
           Top Districts
         </h1>
 
-        <ul className="districts-data-list">
+        <ul className="districts-data-list" testid="topDistrictsUnorderedList">
           {districtDataList.map(eachState => (
             <DistrictItem
               key={eachState.districtName}
@@ -446,7 +446,7 @@ class StateSpecificDetails extends Component {
   }
 
   renderLoadingView = () => (
-    <div className="covid-loader-container">
+    <div className="covid-loader-container" testid="timelinesDataLoader">
       <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
     </div>
   )

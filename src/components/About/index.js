@@ -50,7 +50,7 @@ class About extends Component {
         <p className="about-description">
           COVID-19 vaccines be ready for distribution
         </p>
-        <ul className="faq-list" testid="aqsUnorderedList">
+        <ul className="faq-list" testid="faqsUnorderedList">
           {faqsList.map(eachFaq => (
             <FaqItem faqData={eachFaq} key={eachFaq.qno} />
           ))}
@@ -61,7 +61,7 @@ class About extends Component {
   }
 
   renderLoadingView = () => (
-    <div className="covid-loader-container">
+    <div className="covid-loader-container" testid="aboutRouteLoader">
       <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
     </div>
   )

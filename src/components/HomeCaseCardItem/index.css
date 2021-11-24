@@ -13,18 +13,18 @@
 .home-country-wide {
   list-style-type: none;
   margin: 10px;
-  width: 140px;
-  height: 140px;
+  width: 180px;
+  height: 180px;
   border-radius: 5px;
 }
-/* @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .home-country-wide {
     list-style-type: none;
     margin: 10px;
-    width: 200px;
-    height: 200px;
+    width: 140px;
+    height: 140px;
   }
-} */
+}
 
 .case-count {
   font-family: Roboto;

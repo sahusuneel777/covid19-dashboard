@@ -65,7 +65,7 @@
 }
 .state-wise-records {
   /* border: 1px white solid; */
-  width: 100%;
+  width: 90%;
 }
 @media screen and (max-width: 768px) {
   .state-wise-records {
@@ -83,7 +83,7 @@
 }
 @media screen and (max-width: 768px) {
   .state-wise-total-table-record {
-    width: 839px;
+    width: 800px;
     margin-left: 24px;
   }
 }
@@ -132,6 +132,7 @@
 .diff-type-total-case-cards {
   width: 100%;
   display: flex;
+  justify-content: center;
 }
 
 @media screen and (max-width: 768px) {

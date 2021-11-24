@@ -209,7 +209,7 @@ class Home extends Component {
   convertObjectsDataIntoListItemsUsingForInMethod = () => {
     const resultList = []
     const {stateWiseData} = this.state
-    console.log(`stateWiseData`, stateWiseData)
+    // console.log(`stateWiseData`, stateWiseData)
 
     // getting keys of an object object
     const keyNames = Object.keys(stateWiseData)
@@ -258,7 +258,7 @@ class Home extends Component {
 
   sortAscending = () => {
     const sortedStateArray = this.sortByCaseKeyAsc(TabelData, 'stateCode')
-    console.log(sortedStateArray)
+    // console.log(sortedStateArray)
     this.setState({
       tableStateDataList: sortedStateArray,
       showDescSort: false,
@@ -274,7 +274,11 @@ class Home extends Component {
       showDescSort: true,
     })
 
-    console.log(sortedStateArrayrev)
+    // console.log(sortedStateArrayrev)
+  }
+
+  reload = () => {
+    this.getAllStatesData()
   }
 
   renderCovidCasesData = () => {
@@ -292,8 +296,8 @@ class Home extends Component {
     console.log(`stateWiseData`, stateWiseData)
 
     TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
-    console.log(`tableData`, TabelData)
-    console.log(`tableStateDataList`, tableStateDataList)
+    // console.log(`tableData`, TabelData)
+    // console.log(`tableStateDataList`, tableStateDataList)
 
     let filteredStatesList = []
     filteredStatesList = statesList.filter(eachState =>
@@ -406,13 +410,13 @@ class Home extends Component {
             </div>
           )}
         </div>
-        <Footer />
+        <Footer reload={this.reload} />
       </div>
     )
   }
 
   renderLoadingView = () => (
-    <div className="covid-loader-container">
+    <div testid="homeRouteLoader" className="covid-loader-container">
       <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
     </div>
   )

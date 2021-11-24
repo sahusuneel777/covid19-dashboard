@@ -16,6 +16,7 @@
 .diff-type-cases {
   padding-left: 0px;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
 }
 

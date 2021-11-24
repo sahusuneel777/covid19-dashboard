@@ -44,7 +44,7 @@ const CaseCardItem = props => {
   return (
     <ul className="diff-type-cases">
       <li
-        testid="countryWideConfirmedCases"
+        testid="stateSpecificConfirmedCasesContainer"
         onClick={onClickConfirmed}
         className={`country-wide confirmed ${activeConfirmedClass}`}
         // className="country-wide confirmed "
@@ -52,12 +52,12 @@ const CaseCardItem = props => {
         <h1 className="case-card-heading">confirmed</h1>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521128/mini-project/check-mark_1_e83qpy.png"
-          alt="country wide confirmed cases pic"
+          alt="state specific confirmed cases pic"
         />
         <p className="case-count confirmed">{confirmed}</p>
       </li>
       <li
-        testid="countryWideActiveCases"
+        testid="stateSpecificActiveCasesContainer"
         onClick={onClickActive}
         className={`country-wide active ${activeActiveClass}`}
         // className="country-wide active"
@@ -65,12 +65,12 @@ const CaseCardItem = props => {
         <h1 className="case-card-heading">Active</h1>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521130/mini-project/protection_1_roaazd.png"
-          alt="country wide active cases pic"
+          alt="state specific active cases pic"
         />
         <p className="case-count active">{active}</p>
       </li>
       <li
-        testid="countryWideRecoveredCases"
+        testid="stateSpecificRecoveredCasesContainer"
         onClick={onClickRecovered}
         className={`country-wide recovered ${activeRecoveredClass}`}
         // className="country-wide recovered"
@@ -78,13 +78,13 @@ const CaseCardItem = props => {
         <h1 className="case-card-heading">Recovered</h1>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521130/mini-project/recovered_1_pz28bz.png"
-          alt="country wide recovered cases pic"
+          alt="state specific recovered cases pic"
         />
         <p className="case-count recovered">{recovered}</p>
       </li>
 
       <li
-        testid="countryWideDeceasedCases"
+        testid="stateSpecificDeceasedCasesContainer"
         onClick={onClickDeceased}
         className={`country-wide deceased ${activeDeceasedClass}`}
         // className="country-wide deceased"
@@ -92,7 +92,7 @@ const CaseCardItem = props => {
         <h1 className="case-card-heading">Deceased</h1>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521128/mini-project/breathing_1_uxmvq9.png"
-          alt="country wide deceased cases pic"
+          alt="state specific deceased cases pic"
         />
         <p className="case-count deceased">{deceased}</p>
       </li>

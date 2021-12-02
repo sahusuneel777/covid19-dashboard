@@ -293,7 +293,7 @@ class Home extends Component {
       showDescSort,
     } = this.state
 
-    console.log(`stateWiseData`, stateWiseData)
+    // console.log(`stateWiseData`, stateWiseData)
 
     TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
     // console.log(`tableData`, TabelData)
@@ -393,7 +393,7 @@ class Home extends Component {
                       eachTotal =>
                         eachTotal.name !== undefined && (
                           <StateWiseTotalRecord
-                            key={eachTotal.confirmed}
+                            key={eachTotal.stateCode}
                             stateTotal={eachTotal}
                           />
                         ),

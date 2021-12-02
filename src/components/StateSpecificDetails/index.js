@@ -171,7 +171,6 @@ class StateSpecificDetails extends Component {
     showRecoveredCases: false,
     showDeceasedCases: false,
     activeCaseClass: activeCaseConstants.confirm,
-    timeLineData: [],
     stateWiseData: [],
     // singleState: [],
     apiStatus: apiStatusConstants.initial,
@@ -185,7 +184,6 @@ class StateSpecificDetails extends Component {
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
-    const timeLineUrl = 'https://apis.ccbp.in/covid19-timelines-data'
     const apiUrl = 'https://apis.ccbp.in/covid19-state-wise-data'
 
     const options = {
@@ -194,12 +192,7 @@ class StateSpecificDetails extends Component {
 
     const response1 = await fetch(apiUrl, options)
     const fetchedStateWiseData = await response1.json()
-
-    const response2 = await fetch(timeLineUrl, options)
-    const fetchedTimeLineData = await response2.json()
-
     this.setState({
-      timeLineData: fetchedTimeLineData,
       apiStatus: apiStatusConstants.success,
       stateWiseData: fetchedStateWiseData,
     })
@@ -286,8 +279,7 @@ class StateSpecificDetails extends Component {
       stateWiseData,
       // singleState,
     } = this.state
-    console.log(`timeLine`, timeLineData)
-    console.log(`statewiseData`, stateWiseData)
+
     const {match, location} = this.props
 
     const {params} = match
@@ -296,17 +288,15 @@ class StateSpecificDetails extends Component {
     const specificState = stateCode
 
     const specificStateCode = specificState.stateCode
-    console.log(specificStateCode)
+
     const TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
-    console.log(`TabelData`, TabelData)
 
     const singleState = TabelData.filter(
       eachTotal => eachTotal.stateCode === specificStateCode,
     )
 
-    console.log(`singleState`, singleState)
     const [oneState] = singleState
-    console.log(oneState)
+
     const testedCount = oneState.tested
 
     let lastUpdatedDate = oneState.lastUpdated
@@ -319,11 +309,11 @@ class StateSpecificDetails extends Component {
     const StateName = State.state_name
 
     const [singleSpecificState] = singleState
-    console.log(`s2`, singleSpecificState)
+    // console.log(`s2`, singleSpecificState)
     const {districts} = singleSpecificState
 
     const districtDataList = this.convertDistrictObjectIntoList(districts)
-    console.log(districtDataList)
+    // console.log(districtDataList)
 
     const sortByCaseKey = (array, key) =>
       array.sort((a, b) => {
@@ -333,7 +323,7 @@ class StateSpecificDetails extends Component {
       })
 
     const sortedArray = sortByCaseKey(districtDataList, activeCaseClass)
-    console.log(`sorted_case_array`, sortedArray)
+    // console.log(`sorted_case_array`, sortedArray)
 
     const showConfirmed = () => {
       this.setState({
@@ -439,14 +429,14 @@ class StateSpecificDetails extends Component {
           ))}
         </ul>
 
-        <TimeLineData timeLineData={timeLineData} />
+        <TimeLineData />
         <Footer />
       </div>
     )
   }
 
   renderLoadingView = () => (
-    <div className="covid-loader-container" testid="timelinesDataLoader">
+    <div className="covid-loader-container" testid="stateDetailsLoader">
       <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
     </div>
   )

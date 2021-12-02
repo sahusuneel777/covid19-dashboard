@@ -84,6 +84,14 @@
   color: #94a3b8;
 }
 
+.nav-item-home {
+  list-style-type: none;
+  margin-right: 15px;
+  cursor: pointer;
+  height: 24px;
+  color: #94a3b8;
+}
+
 .active-tab-class {
   list-style-type: none;
   margin-right: 15px;

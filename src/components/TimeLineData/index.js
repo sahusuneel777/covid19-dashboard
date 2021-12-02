@@ -1,5 +1,7 @@
 import {Component} from 'react'
 import {withRouter} from 'react-router-dom'
+import {format} from 'date-fns'
+import Loader from 'react-loader-spinner'
 
 import {
   LineChart,
@@ -11,21 +13,47 @@ import {
   Line,
   BarChart,
   Bar,
-  ResponsiveContainer,
 } from 'recharts'
 
 import './index.css'
 
 // const format = require('date-fns/format')
+const apiStatusConstants = {
+  initial: 'INITIAL',
+  success: 'SUCCESS',
+  inProgress: 'IN_PROGRESS',
+}
 
 class TimeLineData extends Component {
   state = {
-    activeTrend: `cumulative`,
+    // activeTrend: `cumulative`,
+    timeLineData: [],
+    apiStatus: apiStatusConstants.initial,
+  }
+
+  componentDidMount() {
+    this.getTimeData()
+  }
+
+  getTimeData = async () => {
+    const timeLineUrl = 'https://apis.ccbp.in/covid19-timelines-data'
+    const options = {
+      method: 'GET',
+    }
+    this.setState({apiStatus: apiStatusConstants.inProgress})
+    const response = await fetch(timeLineUrl, options)
+    const fetchedTimeLineData = await response.json()
+
+    this.setState({
+      timeLineData: fetchedTimeLineData,
+      apiStatus: apiStatusConstants.success,
+    })
   }
 
   convertObjectsDataIntoListItemsUsingForInMethod = () => {
     const singleTimeLineResultList = []
-    const {timeLineData, match} = this.props
+    const {match} = this.props
+    const {timeLineData} = this.state
     const {params} = match
     const {stateCode} = params
 
@@ -81,7 +109,6 @@ class TimeLineData extends Component {
           'Dec',
         ]
 
-        // console.log("The current month is " + monthNames[d.getMonth()]);
         const month = monthNames[new Date(eachKey).getUTCMonth() + 1]
         const date = new Date(eachKey).getUTCDate()
 
@@ -101,11 +128,39 @@ class TimeLineData extends Component {
     return lastTenDates.reverse()
   }
 
+  getLastDateOfMonth = allDates => {
+    const lastDates = []
+    const cumulativeDates = []
+    let uniqueCumulativeDates = []
+    const keyNames = Object.keys(allDates)
+    console.log(`keyNames`, keyNames)
+    keyNames.forEach(eachKey => {
+      const dateString = eachKey
+      const date = Date.parse(dateString)
+      const dateStamp = new Date(date)
+      const lastDateOfMonth = new Date(
+        dateStamp.getFullYear(),
+        dateStamp.getMonth() + 1,
+        0,
+      )
+      const formattedDate = format(new Date(lastDateOfMonth), 'yyyy-MM-d')
+      cumulativeDates.push(formattedDate)
+      uniqueCumulativeDates = [...new Set(cumulativeDates)]
+      console.log(`uniqueCumulativeDates`, uniqueCumulativeDates)
+
+      if (!lastDates.includes(`${lastDateOfMonth}`)) {
+        lastDates.push(format(new Date(lastDateOfMonth), 'MMM Y').toString())
+      }
+    })
+    return {lastDates, uniqueCumulativeDates}
+  }
+
   renderBarChart = lastTenDaysCases => (
     <div className="graph-container">
       <h1 className="bar-graph-heading">Bar Chart</h1>
 
-      <ResponsiveContainer width="85%" height={400} margin={10}>
+      {/* <ResponsiveContainer width="85%" height={400} margin={10}> */}
+      <div className="bar-chart-wrapper">
         <BarChart
           width={500}
           height={350}
@@ -130,9 +185,10 @@ class TimeLineData extends Component {
             label={{position: 'top', color: 'white'}}
           />
         </BarChart>
-      </ResponsiveContainer>
-
-      <ResponsiveContainer width="85%" height={400} margin={10}>
+        {/* </ResponsiveContainer> */}
+      </div>
+      {/* <ResponsiveContainer width="85%" height={400} margin={10}> */}
+      <div className="bar-chart-wrapper">
         <BarChart
           width={500}
           height={350}
@@ -156,8 +212,10 @@ class TimeLineData extends Component {
             label={{position: 'top', color: 'white'}}
           />
         </BarChart>
-      </ResponsiveContainer>
-      <ResponsiveContainer width="85%" height={400}>
+      </div>
+      {/* </ResponsiveContainer> */}
+      {/* <ResponsiveContainer width="85%" height={400}> */}
+      <div className="bar-chart-wrapper">
         <BarChart
           width={500}
           height={350}
@@ -182,8 +240,10 @@ class TimeLineData extends Component {
             label={{position: 'top', color: 'white'}}
           />
         </BarChart>
-      </ResponsiveContainer>
-      <ResponsiveContainer width="85%" height={400}>
+      </div>
+      {/* </ResponsiveContainer> */}
+      {/* <ResponsiveContainer width="85%" height={400}> */}
+      <div className="bar-chart-wrapper">
         <BarChart
           width={800}
           height={350}
@@ -207,24 +267,26 @@ class TimeLineData extends Component {
             label={{position: 'top', color: 'white'}}
           />
         </BarChart>
-      </ResponsiveContainer>
+        {/* </ResponsiveContainer> */}
+      </div>
     </div>
   )
 
-  renderLineChart = lastTenDaysCases => (
+  renderLineChart = dataForCumulative => (
     <div className="graph-container" testid="lineChartsContainer">
-      <ResponsiveContainer width="85%" height={400}>
+      {/* <ResponsiveContainer width="85%" height={400}> */}
+      <div className="line-chart-wrapper">
         <LineChart
           width={730}
-          height={250}
-          data={lastTenDaysCases}
+          height={300}
+          data={dataForCumulative}
           className="bar-confirmed-chart"
           Legend="confirmed"
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
         >
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
           <XAxis
-            dataKey="date"
+            dataKey="month"
             label={{fill: 'red', fontSize: 10}}
             stroke="#FF073A"
             axisLine={{stroke: '#FF073A'}}
@@ -232,60 +294,66 @@ class TimeLineData extends Component {
           <YAxis axisLine={{stroke: '#FF073A'}} />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="confirmed" stroke="#FF073A" />
+          <Line type="monotone" dataKey="confirmedCases" stroke="#FF073A" />
         </LineChart>
-      </ResponsiveContainer>
-      <ResponsiveContainer width="85%" height={400}>
+        {/* </ResponsiveContainer> */}
+      </div>
+      {/* <ResponsiveContainer width="85%" height={400}> */}
+      <div className="line-chart-wrapper">
         <LineChart
           width={730}
           height={250}
-          data={lastTenDaysCases}
+          data={dataForCumulative}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
           className="bar-active-chart"
         >
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
           <XAxis
-            dataKey="date"
+            dataKey="month"
             stroke="#007BFF"
             axisLine={{stroke: '#007BFF'}}
           />
           <YAxis axisLine={{stroke: '#007BFF'}} />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="active" stroke="#007BFF" />
+          <Line type="monotone" dataKey="activeCases" stroke="#007BFF" />
         </LineChart>
-      </ResponsiveContainer>
-      <ResponsiveContainer width="85%" height={400}>
+      </div>
+      <div className="line-chart-wrapper">
+        {/* </ResponsiveContainer> */}
+        {/* <ResponsiveContainer width="85%" height={400}> */}
         <LineChart
           width={730}
           height={250}
-          data={lastTenDaysCases}
+          data={dataForCumulative}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
           className="bar-recovered-chart"
         >
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
           <XAxis
-            dataKey="date"
+            dataKey="month"
             stroke="#27A243"
             axisLine={{stroke: '#27A243'}}
           />
           <YAxis axisLine={{stroke: '#27A243'}} />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="recovered" stroke="#27A243" />
+          <Line type="monotone" dataKey="recoveredCases" stroke="#27A243" />
         </LineChart>
-      </ResponsiveContainer>
-      <ResponsiveContainer width="85%" height={400}>
+      </div>
+      {/* </ResponsiveContainer> */}
+      {/* <ResponsiveContainer width="85%" height={400}> */}
+      <div className="line-chart-wrapper">
         <LineChart
           width={730}
           height={250}
-          data={lastTenDaysCases}
+          data={dataForCumulative}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
           className="bar-tested-chart"
         >
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
           <XAxis
-            dataKey="date"
+            dataKey="month"
             stroke="#9673B9"
             axisLine={{stroke: '#9673B9'}}
           />
@@ -294,38 +362,42 @@ class TimeLineData extends Component {
           <Legend />
           <Line type="monotone" dataKey="tested" stroke="#9673B9" />
         </LineChart>
-      </ResponsiveContainer>
-      <ResponsiveContainer width="85%" height={400}>
+      </div>
+      {/* </ResponsiveContainer> */}
+      {/* <ResponsiveContainer width="85%" height={400}> */}
+      <div className="line-chart-wrapper">
         <LineChart
           width={730}
           height={250}
-          data={lastTenDaysCases}
+          data={dataForCumulative}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
           className="bar-deceased-chart"
         >
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
           <XAxis
-            dataKey="date"
+            dataKey="month"
             stroke="#6C757D"
             axisLine={{stroke: '#6C757D'}}
           />
           <YAxis axisLine={{stroke: '#6C757D'}} />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="deceased" stroke="#6C757D" />
+          <Line type="monotone" dataKey="deceasedCases" stroke="#6C757D" />
         </LineChart>
-      </ResponsiveContainer>
-      <ResponsiveContainer width="85%" height={400}>
+      </div>
+      {/* </ResponsiveContainer> */}
+      {/* <ResponsiveContainer width="85%" height={400}> */}
+      <div className="line-chart-wrapper">
         <LineChart
           width={730}
           height={250}
-          data={lastTenDaysCases}
+          data={dataForCumulative}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
           className="bar-vaccinated-chart"
         >
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
           <XAxis
-            dataKey="date"
+            dataKey="month"
             stroke="#F95581"
             axisLine={{stroke: '#F95581'}}
           />
@@ -334,7 +406,8 @@ class TimeLineData extends Component {
           <Legend />
           <Line type="monotone" dataKey="vaccinated" stroke="#F95581" />
         </LineChart>
-      </ResponsiveContainer>
+        {/* </ResponsiveContainer> */}
+      </div>
     </div>
   )
 
@@ -346,79 +419,61 @@ class TimeLineData extends Component {
     this.setState({activeOption: false})
   }
 
-  getLastDateOfMonth = allDates => {
-    const lastDates = []
+  //  cumulative part
+  getDataForCumulative = ([allDates, uniqueCumulativeDates]) => {
+    const resultList = []
     const keyNames = Object.keys(allDates)
-    console.log(keyNames)
     keyNames.forEach(eachKey => {
-      const dateString = eachKey
-      const date = Date.parse(dateString)
-      const dateStamp = new Date(date)
-      const lastDateOfMonth = new Date(
-        dateStamp.getFullYear(),
-        dateStamp.getMonth() + 1,
-        0,
-      )
+      if (uniqueCumulativeDates.includes(eachKey)) {
+        const {total} = allDates[eachKey]
+        console.log(total)
+        const month = format(new Date(eachKey), 'MMM Y').toString()
+        const recoveredCases = total.recovered ? total.deceased : 0
+        const confirmedCases = total.confirmed ? total.confirmed : 0
+        const deceasedCases = total.deceased ? total.deceased : 0
+        const activeCases = confirmedCases - (deceasedCases + recoveredCases)
+        const tested = total.tested ? total.tested : 0
+        const vaccinated = total.vaccinated1 ? total.vaccinated1 : 0
 
-      console.log(lastDateOfMonth)
-
-      if (!lastDates.includes(`${lastDateOfMonth}`)) {
-        lastDates.push(lastDateOfMonth)
-        // console.log(lastDates)
+        resultList.push({
+          month,
+          confirmedCases,
+          deceasedCases,
+          recoveredCases,
+          tested,
+          vaccinated,
+          activeCases,
+        })
       }
     })
+    return resultList
+    // console.log(uniqueCumulativeDates)
   }
 
-  // program to remove duplicate value from an array
-
-  //     const getUnique = arr => {
-  //       const uniqueArr = []
-  //       arr.map(eachEle => {
-  //         if (uniqueArr.indexOf(eachEle) === -1) {
-  //           uniqueArr.push(eachEle)
-  //         }
-  //         return null
-  //       })
-  //       return uniqueArr
-  //     }
-
-  //     // calling the function
-  //     // passing array argument
-  //     const uniques = getUnique(lastDates)
-  //     console.log(`uniques`, uniques)
-  //   }
-
-  render() {
+  renderTimeLineData = () => {
     const {activeOption} = this.state
 
-    // const districtHeadingActiveClass = () => {
-    //   switch (activeTrend) {
-    //     case activeTrendConstants.cumulative:
-    //       return 'confirmed-head'
-    //     case activeTrendConstants.daily:
-    //       return ' recovered-head'
-    //     default:
-    //       return null
-    //   }
-    // }
-
-    // const districtHeadingActive = districtHeadingActiveClass()
-
     const activeTrend = activeOption ? 'active-class' : ''
-    // const activeOption = activeDailyOption ? 'active-class' : ''
 
     const singleTimeLineDataList = this.convertObjectsDataIntoListItemsUsingForInMethod()
 
     const [dates] = singleTimeLineDataList
 
     const allDates = this.getAllDates(dates)
-    console.log(`allDates`, allDates)
 
     const lastTenDaysCases = this.convertLastAllDatesObjectIntoAList(allDates)
-    // console.log(lastTenDaysCases)
 
     const lastDateOfMonths = this.getLastDateOfMonth(allDates)
-    console.log(lastDateOfMonths)
+    // console.log(`lastDateOfMonths`, lastDateOfMonths)
+    const {uniqueCumulativeDates} = lastDateOfMonths
+
+    const dataForCumulative = this.getDataForCumulative([
+      allDates,
+      uniqueCumulativeDates,
+    ])
+
+    console.log(`dataForCumulative`, dataForCumulative)
+
     return (
       <div>
         <div className="heading-container">
@@ -442,12 +497,33 @@ class TimeLineData extends Component {
         </div>
         <div className="chart-container">
           {activeOption
-            ? this.renderLineChart(lastTenDaysCases)
+            ? this.renderLineChart(dataForCumulative)
             : this.renderBarChart(lastTenDaysCases)}
         </div>
       </div>
     )
   }
-}
 
+  renderLoadingView = () => (
+    <div className="covid-loader-container" testid="timelinesDataLoader">
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </div>
+  )
+
+  render() {
+    const renderTimeLines = () => {
+      const {apiStatus} = this.state
+
+      switch (apiStatus) {
+        case apiStatusConstants.success:
+          return this.renderTimeLineData()
+        case apiStatusConstants.inProgress:
+          return this.renderLoadingView()
+        default:
+          return null
+      }
+    }
+    return <div>{renderTimeLines()}</div>
+  }
+}
 export default withRouter(TimeLineData)

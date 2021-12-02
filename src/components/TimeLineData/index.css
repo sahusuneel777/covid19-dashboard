@@ -31,7 +31,14 @@
   width: 95%;
   height: 400px;
 }
-
+.line-chart-wrapper {
+  max-width: 95%;
+  overflow-x: auto;
+}
+.bar-chart-wrapper {
+  max-width: 95%;
+  overflow-x: auto;
+}
 .bar-graph-heading {
   color: #94a3b8;
   font-size: 24px;

@@ -22,60 +22,60 @@ const HomeCaseCardItem = props => {
   const activeDeceasedClass = showDeceasedCases ? `deceased-active-class` : ''
 
   return (
-    <ul className="diff-type-cards">
-      <li
+    <div testid="stateWiseCovidDataTable" className="diff-type-cards">
+      <div
         testid="countryWideConfirmedCases"
         // onClick={onClickConfirmed}
         className={`home-country-wide confirmed ${activeConfirmedClass}`}
       >
-        <h1 className="case-card-heading">confirmed</h1>
+        <p className="case-card-heading">confirmed</p>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521128/mini-project/check-mark_1_e83qpy.png"
           alt="country wide confirmed cases pic"
         />
         <p className="case-count confirmed">{confirmed}</p>
-      </li>
-      <li
+      </div>
+      <div
         testid="countryWideActiveCases"
         // onClick={onClickActive}
         className={`home-country-wide active ${activeActiveClass}`}
         // className="country-wide active"
       >
-        <h1 className="case-card-heading">Active</h1>
+        <p className="case-card-heading">Active</p>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521130/mini-project/protection_1_roaazd.png"
           alt="country wide active cases pic"
         />
         <p className="case-count">{active}</p>
-      </li>
-      <li
+      </div>
+      <div
         testid="countryWideRecoveredCases"
         // onClick={onClickRecovered}
         className={`home-country-wide recovered ${activeRecoveredClass}`}
         // className="country-wide recovered"
       >
-        <h1 className="case-card-heading">Recovered</h1>
+        <p className="case-card-heading">Recovered</p>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521130/mini-project/recovered_1_pz28bz.png"
           alt="country wide recovered cases pic"
         />
         <p className="case-count">{recovered}</p>
-      </li>
+      </div>
 
-      <li
+      <div
         testid="countryWideDeceasedCases"
         // onClick={onClickDeceased}
         className={`home-country-wide deceased ${activeDeceasedClass}`}
         // className="country-wide deceased"
       >
-        <h1 className="case-card-heading">Deceased</h1>
+        <p className="case-card-heading">Deceased</p>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521128/mini-project/breathing_1_uxmvq9.png"
           alt="country wide deceased cases pic"
         />
         <p className="case-count">{deceased}</p>
-      </li>
-    </ul>
+      </div>
+    </div>
   )
 }
 export default HomeCaseCardItem

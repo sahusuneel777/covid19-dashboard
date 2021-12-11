@@ -2,7 +2,7 @@ import './index.css'
 
 const FaqItem = props => {
   const {faqData} = props
-  const {answer, category, question} = faqData
+  const {answer, question} = faqData
   return (
     <li className="faq-item-card">
       <p className="question">{question}</p>

@@ -5,9 +5,10 @@ import './index.css'
 
 const Footer = () => (
   <div className="footer-container">
-    <h1 className="logo-heading">
+    {/* <h1 className="logo-heading">
       COVID19<span className="india">INDIA</span>
-    </h1>
+    </h1> */}
+    <h1 className="logo-heading">COVID19INDIA</h1>
     <p className="footer-description">
       we stand with everyone fighting on the front lines
     </p>

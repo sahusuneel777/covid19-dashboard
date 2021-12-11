@@ -225,10 +225,16 @@ class Home extends Component {
         const population = stateWiseData[keyName].meta.population
           ? stateWiseData[keyName].meta.population
           : 0
+        let stateName
+        const name = statesList.find(state => state.state_code === keyName)
+        if (name !== undefined) {
+          stateName = name.state_name
+        }
+
         resultList.push({
           stateCode: keyName,
           // name: statesList.find(state => state.state_code === keyName),
-          name: statesList.find(state => state.state_code === keyName),
+          name: stateName,
           confirmed,
           deceased,
           recovered,
@@ -253,12 +259,12 @@ class Home extends Component {
     array.sort((a, b) => {
       const x = a[key]
       const y = b[key]
+      console.log('x', x, y, key)
       return x > y ? 1 : -1
     })
 
   sortAscending = () => {
-    const sortedStateArray = this.sortByCaseKeyAsc(TabelData, 'stateCode')
-    // console.log(sortedStateArray)
+    const sortedStateArray = this.sortByCaseKeyAsc(TabelData, 'name')
     this.setState({
       tableStateDataList: sortedStateArray,
       showDescSort: false,
@@ -267,7 +273,7 @@ class Home extends Component {
   }
 
   sortDescending = () => {
-    const sortedStateArrayrev = this.sortByCaseKeyDesc(TabelData, 'stateCode')
+    const sortedStateArrayrev = this.sortByCaseKeyDesc(TabelData, 'name')
     this.setState({
       tableStateDataList: sortedStateArrayrev,
       showAscSort: false,
@@ -275,10 +281,6 @@ class Home extends Component {
     })
 
     // console.log(sortedStateArrayrev)
-  }
-
-  reload = () => {
-    this.getAllStatesData()
   }
 
   renderCovidCasesData = () => {
@@ -296,7 +298,7 @@ class Home extends Component {
     // console.log(`stateWiseData`, stateWiseData)
 
     TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
-    // console.log(`tableData`, TabelData)
+    console.log(`tableData`, TabelData)
     // console.log(`tableStateDataList`, tableStateDataList)
 
     let filteredStatesList = []
@@ -356,64 +358,69 @@ class Home extends Component {
                 )}
               </div>
 
-              <div className="state-wise-records">
+              <div
+                // testid="stateWiseCovidDataTable"
+                className="state-wise-records"
+              >
                 <ul
                   className="state-wise-total-table-record"
                   testid="stateWiseCovidDataTable"
                 >
-                  <li className="total-record-heading">
-                    <div className="sorting-item">
-                      <p className="table-heading">States/UT</p>
-                      <button
-                        type="button"
-                        className="sort-icon"
-                        testid="ascendingSort"
-                        onClick={this.sortAscending}
-                      >
-                        <FcGenericSortingAsc />
-                      </button>
-                      <button
-                        type="button"
-                        className="sort-icon"
-                        testid="descendingSort"
-                        onClick={this.sortDescending}
-                      >
-                        <FcGenericSortingDesc />
-                      </button>
-                    </div>
-                    <p className="table-heading">Confirmed</p>
-                    <p className="table-heading">Active</p>
-                    <p className="table-heading">Recovered</p>
-                    <p className="table-heading">Deceased</p>
-                    <p className="table-heading">Population</p>
+                  <li className="total-record">
+                    <li className="table-head">
+                      <div className="sorting-item">
+                        <p className="table-heading">States/UT</p>
+                        <button
+                          type="button"
+                          className="sort-icon"
+                          testid="ascendingSort"
+                          onClick={this.sortAscending}
+                        >
+                          <FcGenericSortingAsc testid="ascendingSort" />
+                        </button>
+                        <button
+                          type="button"
+                          className="sort-icon"
+                          testid="descendingSort"
+                          onClick={this.sortDescending}
+                        >
+                          <FcGenericSortingDesc testid="descendingSort" />
+                        </button>
+                      </div>
+                      <p className="table-heading">Confirmed</p>
+                      <p className="table-heading">Active</p>
+                      <p className="table-heading">Recovered</p>
+                      <p className="table-heading">Deceased</p>
+                      <p className="table-heading">Population</p>
+                    </li>
+                    <hr className="hr-line" />
+                    {showAscSort &&
+                      TabelData.map(
+                        eachTotal =>
+                          eachTotal.name !== undefined && (
+                            <StateWiseTotalRecord
+                              key={eachTotal.stateCode}
+                              stateTotal={eachTotal}
+                            />
+                          ),
+                      )}
+                    {showDescSort &&
+                      tableStateDataList.map(
+                        eachTotal =>
+                          eachTotal.name !== undefined && (
+                            <StateWiseTotalRecord
+                              key={eachTotal.confirmed}
+                              stateTotal={eachTotal}
+                            />
+                          ),
+                      )}
                   </li>
-                  <hr className="hr-line" />
-                  {showAscSort &&
-                    TabelData.map(
-                      eachTotal =>
-                        eachTotal.name !== undefined && (
-                          <StateWiseTotalRecord
-                            key={eachTotal.stateCode}
-                            stateTotal={eachTotal}
-                          />
-                        ),
-                    )}
-                  {showDescSort &&
-                    tableStateDataList.map(
-                      eachTotal =>
-                        eachTotal.name !== undefined && (
-                          <StateWiseTotalRecord
-                            key={eachTotal.confirmed}
-                            stateTotal={eachTotal}
-                          />
-                        ),
-                    )}
                 </ul>
               </div>
             </div>
           )}
         </div>
-        <Footer reload={this.reload} />
+        <Footer />
       </div>
     )
   }

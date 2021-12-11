@@ -49,7 +49,7 @@ const CaseCardItem = props => {
         className={`country-wide confirmed ${activeConfirmedClass}`}
         // className="country-wide confirmed "
       >
-        <h1 className="case-card-heading">confirmed</h1>
+        <p className="case-card-heading">confirmed</p>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521128/mini-project/check-mark_1_e83qpy.png"
           alt="state specific confirmed cases pic"
@@ -62,7 +62,7 @@ const CaseCardItem = props => {
         className={`country-wide active ${activeActiveClass}`}
         // className="country-wide active"
       >
-        <h1 className="case-card-heading">Active</h1>
+        <p className="case-card-heading">Active</p>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521130/mini-project/protection_1_roaazd.png"
           alt="state specific active cases pic"
@@ -75,7 +75,7 @@ const CaseCardItem = props => {
         className={`country-wide recovered ${activeRecoveredClass}`}
         // className="country-wide recovered"
       >
-        <h1 className="case-card-heading">Recovered</h1>
+        <p className="case-card-heading">Recovered</p>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521130/mini-project/recovered_1_pz28bz.png"
           alt="state specific recovered cases pic"
@@ -89,7 +89,7 @@ const CaseCardItem = props => {
         className={`country-wide deceased ${activeDeceasedClass}`}
         // className="country-wide deceased"
       >
-        <h1 className="case-card-heading">Deceased</h1>
+        <p className="case-card-heading">Deceased</p>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521128/mini-project/breathing_1_uxmvq9.png"
           alt="state specific deceased cases pic"

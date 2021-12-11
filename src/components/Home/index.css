@@ -83,15 +83,23 @@
 }
 @media screen and (max-width: 768px) {
   .state-wise-total-table-record {
-    width: 800px;
+    width: 700px;
     margin-left: 24px;
   }
 }
 
-.total-record-heading {
+.total-record {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 95%;
 }
 
 .table-heading {

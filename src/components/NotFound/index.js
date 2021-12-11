@@ -1,10 +1,9 @@
+import {Redirect} from 'react-router-dom'
 import './index.css'
 
-const NotFound = props => {
-  const {reload} = props
-  const goToHome = () => {
-    reload()
-  }
+const NotFound = () => {
+  const goToHome = () => <Redirect to="/" />
+
   return (
     <div className="covid-error-view-container">
       <div className="notfound-card">

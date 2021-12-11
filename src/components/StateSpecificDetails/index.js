@@ -172,7 +172,6 @@ class StateSpecificDetails extends Component {
     showDeceasedCases: false,
     activeCaseClass: activeCaseConstants.confirm,
     stateWiseData: [],
-    // singleState: [],
     apiStatus: apiStatusConstants.initial,
   }
 
@@ -242,7 +241,6 @@ class StateSpecificDetails extends Component {
   }
 
   convertDistrictObjectIntoList = districts => {
-    // console.log('convert district called')
     const resultDistrictList = []
     const districtKeyName = Object.keys(districts)
     districtKeyName.forEach(keyName => {
@@ -252,9 +250,7 @@ class StateSpecificDetails extends Component {
         const deceased = total.deceased ? total.deceased : 0
         const recovered = total.recovered ? total.recovered : 0
         const tested = total.tested ? total.tested : 0
-        // const population = districts[keyName].meta.population
-        //   ? districts[keyName].meta.population
-        //   : 0
+
         resultDistrictList.push({
           districtName: keyName,
           confirmed,
@@ -275,12 +271,10 @@ class StateSpecificDetails extends Component {
       showRecoveredCases,
       showDeceasedCases,
       activeCaseClass,
-      timeLineData,
-      stateWiseData,
       // singleState,
     } = this.state
 
-    const {match, location} = this.props
+    const {match} = this.props
 
     const {params} = match
     const stateCode = params
@@ -387,7 +381,7 @@ class StateSpecificDetails extends Component {
         <div className="banner-card">
           <div className="state-details-container">
             <h1 className="state-name-card">{StateName}</h1>
-            <h1 className="last-update">{`Last Updated on ${lastUpdatedDate}`}</h1>
+            <p className="last-update">{`Last Updated on ${lastUpdatedDate}`}</p>
           </div>
           <div className="tested-count-container">
             <p className="tested-head">Tested</p>
@@ -429,7 +423,7 @@ class StateSpecificDetails extends Component {
           ))}
         </ul>
 
-        <TimeLineData />
+        <TimeLineData activeCaseClass={activeCaseClass} />
         <Footer />
       </div>
     )

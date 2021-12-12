@@ -317,27 +317,7 @@ class TimeLineData extends Component {
           <Line type="monotone" dataKey="recovered" stroke="#27A243" />
         </LineChart>
       </div>
-      <div className="line-chart-wrapper">
-        {' '}
-        <LineChart
-          width={730}
-          height={250}
-          data={lastTenDaysCases}
-          margin={{top: 5, right: 30, left: 20, bottom: 5}}
-          className="cummulative-tested-chart"
-        >
-          {/* <CartesianGrid strokeDasharray="3 3" /> */}
-          <XAxis
-            dataKey="date"
-            stroke="#9673B9"
-            axisLine={{stroke: '#9673B9'}}
-          />
-          <YAxis axisLine={{stroke: '#9673B9'}} />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="tested" stroke="#9673B9" />
-        </LineChart>
-      </div>
+
       <div className="line-chart-wrapper">
         <LineChart
           width={730}
@@ -359,6 +339,28 @@ class TimeLineData extends Component {
         </LineChart>
       </div>
       <div className="line-chart-wrapper">
+        {' '}
+        <LineChart
+          width={730}
+          height={250}
+          data={lastTenDaysCases}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+          className="cummulative-tested-chart"
+        >
+          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          <XAxis
+            dataKey="date"
+            stroke="#9673B9"
+            axisLine={{stroke: '#9673B9'}}
+          />
+          <YAxis axisLine={{stroke: '#9673B9'}} />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="tested" stroke="#9673B9" />
+        </LineChart>
+      </div>
+
+      {/* <div className="line-chart-wrapper">
         <LineChart
           width={730}
           height={250}
@@ -366,7 +368,7 @@ class TimeLineData extends Component {
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
           className="cummulative-vaccinated-chart"
         >
-          {/* <CartesianGrid strokeDasharray="3 3" /> */}
+          {/* <CartesianGrid strokeDasharray="3 3" /> 
           <XAxis
             dataKey="date"
             stroke="#F95581"
@@ -377,7 +379,7 @@ class TimeLineData extends Component {
           <Legend />
           <Line type="monotone" dataKey="vaccinated" stroke="#F95581" />
         </LineChart>
-      </div>
+      </div> */}
     </div>
   )
 

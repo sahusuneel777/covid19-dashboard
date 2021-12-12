@@ -171,9 +171,10 @@ class Home extends Component {
     showSearchSuggestions: false,
     searchInput: '',
     apiStatus: apiStatusConstants.initial,
-    tableStateDataList: TabelData,
-    showAscSort: true,
+    sortedTableStatesList: TabelData,
+    showAscSort: false,
     showDescSort: false,
+    showInitialTable: true,
   }
 
   componentDidMount() {
@@ -266,18 +267,20 @@ class Home extends Component {
   sortAscending = () => {
     const sortedStateArray = this.sortByCaseKeyAsc(TabelData, 'name')
     this.setState({
-      tableStateDataList: sortedStateArray,
+      sortedTableStatesList: sortedStateArray,
       showDescSort: false,
       showAscSort: true,
+      showInitialTable: false,
     })
   }
 
   sortDescending = () => {
     const sortedStateArrayrev = this.sortByCaseKeyDesc(TabelData, 'name')
     this.setState({
-      tableStateDataList: sortedStateArrayrev,
+      sortedTableStatesList: sortedStateArrayrev,
       showAscSort: false,
       showDescSort: true,
+      showInitialTable: false,
     })
 
     // console.log(sortedStateArrayrev)
@@ -290,15 +293,14 @@ class Home extends Component {
       searchInput,
       showSearchSuggestions,
       showStateStats,
-      tableStateDataList,
+      sortedTableStatesList,
       showAscSort,
       showDescSort,
+      showInitialTable,
     } = this.state
 
-    // console.log(`stateWiseData`, stateWiseData)
-
     TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
-    console.log(`tableData`, TabelData)
+    //  console.log(`tableData`, TabelData)
     // console.log(`tableStateDataList`, tableStateDataList)
 
     let filteredStatesList = []
@@ -358,10 +360,7 @@ class Home extends Component {
                 )}
               </div>
 
-              <div
-                // testid="stateWiseCovidDataTable"
-                className="state-wise-records"
-              >
+              <div className="state-wise-records">
                 <ul
                   className="state-wise-total-table-record"
                   testid="stateWiseCovidDataTable"
@@ -376,7 +375,7 @@ class Home extends Component {
                           testid="ascendingSort"
                           onClick={this.sortAscending}
                         >
-                          <FcGenericSortingAsc testid="ascendingSort" />
+                          <FcGenericSortingAsc />
                         </button>
                         <button
                           type="button"
@@ -384,7 +383,7 @@ class Home extends Component {
                           testid="descendingSort"
                           onClick={this.sortDescending}
                         >
-                          <FcGenericSortingDesc testid="descendingSort" />
+                          <FcGenericSortingDesc />
                         </button>
                       </div>
                       <p className="table-heading">Confirmed</p>
@@ -394,7 +393,7 @@ class Home extends Component {
                       <p className="table-heading">Population</p>
                     </li>
                     <hr className="hr-line" />
-                    {showAscSort &&
+                    {showInitialTable &&
                       TabelData.map(
                         eachTotal =>
                           eachTotal.name !== undefined && (
@@ -404,8 +403,18 @@ class Home extends Component {
                             />
                           ),
                       )}
+                    {showAscSort &&
+                      sortedTableStatesList.map(
+                        eachTotal =>
+                          eachTotal.name !== undefined && (
+                            <StateWiseTotalRecord
+                              key={eachTotal.stateCode}
+                              stateTotal={eachTotal}
+                            />
+                          ),
+                      )}
                     {showDescSort &&
-                      tableStateDataList.map(
+                      sortedTableStatesList.map(
                         eachTotal =>
                           eachTotal.name !== undefined && (
                             <StateWiseTotalRecord
@@ -437,8 +446,7 @@ class Home extends Component {
     switch (apiStatus) {
       case apiStatusConstants.success:
         return this.renderCovidCasesData()
-      //   case apiStatusConstants.failure:
-      //     return this.renderFailureView()
+
       case apiStatusConstants.inProgress:
         return this.renderLoadingView()
       default:
@@ -447,6 +455,8 @@ class Home extends Component {
   }
 
   render() {
+    const {stateWiseData} = this.state
+    console.log('stateWiseData', stateWiseData)
     return <div>{this.renderCovidData()}</div>
   }
 }

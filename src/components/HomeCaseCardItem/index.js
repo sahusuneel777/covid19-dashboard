@@ -22,13 +22,12 @@ const HomeCaseCardItem = props => {
   const activeDeceasedClass = showDeceasedCases ? `deceased-active-class` : ''
 
   return (
-    <div testid="stateWiseCovidDataTable" className="diff-type-cards">
+    <div className="diff-type-cards">
       <div
         testid="countryWideConfirmedCases"
-        // onClick={onClickConfirmed}
         className={`home-country-wide confirmed ${activeConfirmedClass}`}
       >
-        <p className="case-card-heading">confirmed</p>
+        <p className="case-card-heading">Confirmed</p>
         <img
           src="https://res.cloudinary.com/dnv6kesmt/image/upload/v1636521128/mini-project/check-mark_1_e83qpy.png"
           alt="country wide confirmed cases pic"

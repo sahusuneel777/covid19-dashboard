@@ -22,7 +22,7 @@ const HomeCaseCardItem = props => {
   const activeDeceasedClass = showDeceasedCases ? `deceased-active-class` : ''
 
   return (
-    <div className="diff-type-cards">
+    <>
       <div
         testid="countryWideConfirmedCases"
         className={`home-country-wide confirmed ${activeConfirmedClass}`}
@@ -36,9 +36,7 @@ const HomeCaseCardItem = props => {
       </div>
       <div
         testid="countryWideActiveCases"
-        // onClick={onClickActive}
         className={`home-country-wide active ${activeActiveClass}`}
-        // className="country-wide active"
       >
         <p className="case-card-heading">Active</p>
         <img
@@ -74,7 +72,7 @@ const HomeCaseCardItem = props => {
         />
         <p className="case-count">{deceased}</p>
       </div>
-    </div>
+    </>
   )
 }
 export default HomeCaseCardItem

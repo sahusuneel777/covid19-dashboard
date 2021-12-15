@@ -5,8 +5,7 @@ import './index.css'
 class Header extends Component {
   state = {
     displaySmNavItems: false,
-    activeHomeNav: true,
-    activeAboutNav: false,
+    activeTab: 'Home',
   }
 
   onClickNavBarIcon = () => {
@@ -22,24 +21,20 @@ class Header extends Component {
   }
 
   activeHomeNav = () => {
-    this.setState({activeHomeNav: true, activeAboutNav: false})
+    this.setState({activeTab: 'Home'})
   }
 
   activeAboutNav = () => {
-    this.setState({activeHomeNav: false, activeAboutNav: true})
+    this.setState({activeTab: 'About'})
   }
 
   render() {
-    const {displaySmNavItems, activeHomeNav, activeAboutNav} = this.state
-    const activeHomeClass = activeHomeNav === true ? 'active-tab-class' : ''
-    const activeAboutClass = activeAboutNav === true ? 'active-tab-class' : ''
+    const {displaySmNavItems, activeTab} = this.state
+    const activeHomeClass = activeTab === 'Home' ? 'active-tab-class' : ''
 
     return (
       <div className="header-container">
         <div className="nav-bar-sm-container">
-          {/* <h1 className="logo-heading">
-              COVID19<span className="india">INDIA</span>
-            </h1> */}
           <Link to="/" className="nav-item-link">
             <h1 className="logo-heading">COVID19INDIA</h1>
           </Link>
@@ -69,7 +64,7 @@ class Header extends Component {
               <Link to="/about" className="nav-item-link">
                 <li
                   onClick={this.activeAboutNav}
-                  className={`nav-item ${activeAboutClass}`}
+                  className={`nav-item ${activeHomeClass}`}
                 >
                   About
                 </li>
@@ -108,7 +103,7 @@ class Header extends Component {
 
             <Link to="/about" className="nav-item-link">
               <li
-                className={`nav-item ${activeAboutClass}`}
+                className={`nav-item ${activeHomeClass}`}
                 onClick={this.activeAboutNav}
               >
                 About

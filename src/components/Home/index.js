@@ -245,8 +245,13 @@ class Home extends Component {
         })
       }
     })
-    // statesResultList = resultList
-    return resultList
+    // returning sorted resultList
+    return resultList.sort((a, b) => {
+      const x = a.name
+      const y = b.name
+      //  console.log('x', x, y, 'name')
+      return x > y ? 1 : -1
+    })
   }
 
   sortByCaseKeyDesc = (array, key) =>
@@ -260,7 +265,7 @@ class Home extends Component {
     array.sort((a, b) => {
       const x = a[key]
       const y = b[key]
-      console.log('x', x, y, key)
+      // console.log('x', x, y, key)
       return x > y ? 1 : -1
     })
 
@@ -300,8 +305,12 @@ class Home extends Component {
     } = this.state
 
     TabelData = this.convertObjectsDataIntoListItemsUsingForInMethod()
-    //  console.log(`tableData`, TabelData)
+    console.log(`tableData`, TabelData)
     // console.log(`tableStateDataList`, tableStateDataList)
+    // TabelData.map(eachState => {
+    //     totalConfirmed : eachState.confirmed
+
+    // } console.log(eachState))
 
     let filteredStatesList = []
     filteredStatesList = statesList.filter(eachState =>
@@ -360,11 +369,11 @@ class Home extends Component {
                 )}
               </div>
 
-              <div className="state-wise-records">
-                <ul
-                  className="state-wise-total-table-record"
-                  testid="stateWiseCovidDataTable"
-                >
+              <div
+                className="state-wise-records"
+                testid="stateWiseCovidDataTable"
+              >
+                <ul className="state-wise-total-table-record">
                   <li className="total-record">
                     <li className="table-head">
                       <div className="sorting-item">

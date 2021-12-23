@@ -326,6 +326,15 @@ class Home extends Component {
       getUpdatedFilteredStates(eachState),
     )
 
+    const getUpdated = (a, b) => ({
+      confirmed: a.confirmed + b.confirmed,
+      deceased: a.deceased + b.deceased,
+      recovered: a.recovered + b.recovered,
+      active: a.active + b.active,
+    })
+
+    const sum = TabelData.reduce(getUpdated)
+
     return (
       <div className="home-route-container">
         <div className="search-container">
@@ -357,7 +366,7 @@ class Home extends Component {
         <div className="states-records-container">
           {showStateStats && (
             <div className="stats-section">
-              <div className="diff-type-total-case-cards">
+              {/* <div className="diff-type-total-case-cards">
                 {TabelData.map(
                   eachTotal =>
                     eachTotal.name === undefined && (
@@ -367,15 +376,21 @@ class Home extends Component {
                       />
                     ),
                 )}
+              </div> */}
+
+              <div className="diff-type-total-case-cards">
+                <HomeCaseCardItem stateTotal={sum} />
+                {/* Directly return
+                component without using map() method. */}{' '}
               </div>
 
               <div
                 className="state-wise-records"
                 testid="stateWiseCovidDataTable"
               >
-                <ul className="state-wise-total-table-record">
-                  <li className="total-record">
-                    <li className="table-head">
+                <div className="state-wise-total-table-record">
+                  <div className="total-record">
+                    <div className="table-head">
                       <div className="sorting-item">
                         <p className="table-heading">States/UT</p>
                         <button
@@ -400,44 +415,47 @@ class Home extends Component {
                       <p className="table-heading">Recovered</p>
                       <p className="table-heading">Deceased</p>
                       <p className="table-heading">Population</p>
-                    </li>
-                    <hr className="hr-line" />
-                    {showInitialTable &&
-                      TabelData.map(
-                        eachTotal =>
-                          eachTotal.name !== undefined && (
-                            <StateWiseTotalRecord
-                              key={eachTotal.stateCode}
-                              stateTotal={eachTotal}
-                            />
-                          ),
-                      )}
-                    {showAscSort &&
-                      sortedTableStatesList.map(
-                        eachTotal =>
-                          eachTotal.name !== undefined && (
-                            <StateWiseTotalRecord
-                              key={eachTotal.stateCode}
-                              stateTotal={eachTotal}
-                            />
-                          ),
-                      )}
-                    {showDescSort &&
-                      sortedTableStatesList.map(
-                        eachTotal =>
-                          eachTotal.name !== undefined && (
-                            <StateWiseTotalRecord
-                              key={eachTotal.confirmed}
-                              stateTotal={eachTotal}
-                            />
-                          ),
-                      )}
-                  </li>
-                </ul>
+                    </div>
+                    {/* <hr className="hr-line" /> */}
+                    <ul className="table-results">
+                      {showInitialTable &&
+                        TabelData.map(
+                          eachTotal =>
+                            eachTotal.name !== undefined && (
+                              <StateWiseTotalRecord
+                                key={eachTotal.stateCode}
+                                stateTotal={eachTotal}
+                              />
+                            ),
+                        )}
+                      {showAscSort &&
+                        sortedTableStatesList.map(
+                          eachTotal =>
+                            eachTotal.name !== undefined && (
+                              <StateWiseTotalRecord
+                                key={eachTotal.stateCode}
+                                stateTotal={eachTotal}
+                              />
+                            ),
+                        )}
+                      {showDescSort &&
+                        sortedTableStatesList.map(
+                          eachTotal =>
+                            eachTotal.name !== undefined && (
+                              <StateWiseTotalRecord
+                                key={eachTotal.confirmed}
+                                stateTotal={eachTotal}
+                              />
+                            ),
+                        )}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           )}
         </div>
+
         <Footer />
       </div>
     )

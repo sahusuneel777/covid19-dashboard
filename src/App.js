@@ -12,11 +12,16 @@ import NotFound from './components/NotFound'
 
 const App = () => (
   <>
-    <Header />
+    <Header activeTab="Home" />
     <Switch>
       <Route exact path="/" component={Home} />
       <Route exact path="/state/:stateCode" component={StateSpecificDetails} />
-      <Route exact path="/about" component={About} />
+      <Route
+        exact
+        path="/about"
+        component={About}
+        // state={(activeTab = 'about')}
+      />
       <Route path="/not-found" component={NotFound} />
       <Redirect to="/not-found" />
     </Switch>

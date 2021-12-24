@@ -82,6 +82,10 @@
     font-size: 14px;
   }
 }
+.additonal {
+  display: flex;
+  flex-direction: column;
+}
 
 .districts-heading {
   font-size: 30px;
@@ -127,7 +131,68 @@
 @media screen and (max-width: 768px) {
   .last-update {
     font-size: 10px;
-
     margin: 0px;
+  }
+}
+.map-container {
+  display: flex;
+  justify-content: center;
+}
+@media screen and (max-width: 768px) {
+  .map-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+.map-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: #94a3b8;
+  width: 60%;
+  height: 400px;
+}
+@media screen and (max-width: 768px) {
+  .map-section {
+    display: none;
+  }
+}
+.additional {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+}
+.ncp-head {
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 600;
+}
+.ncp-count {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  margin: 0px;
+}
+.ncp-population {
+  color: #94a3b8;
+  font-size: 12px;
+  margin: 0.4px;
+}
+.districts-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.state-pic {
+  height: 320px;
+  width: 320px;
+}
+
+@media screen and (max-width: 768px) {
+  .state-pic {
+    height: 300px;
+    width: 300px;
   }
 }
